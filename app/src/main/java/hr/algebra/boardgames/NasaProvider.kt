@@ -11,7 +11,7 @@ import hr.algebra.boardgames.dao.getNasaRepository
 import hr.algebra.boardgames.model.Item
 import java.lang.IllegalArgumentException
 
-private const val AUTHORITY = "hr.algebra.nasa.api.provider"
+private const val AUTHORITY = "hr.algebra.boardgames.api.provider"
 private const val PATH = "items"
 
 private const val ITEMS = 10
@@ -23,7 +23,7 @@ private val URI_MATCHER = with(UriMatcher(UriMatcher.NO_MATCH)) {
     this
 }
 
-val NASA_PROVIDER_URI = Uri.parse("content://$AUTHORITY/$PATH")
+val BOARD_GAMES_PROVIDER_URI: Uri = Uri.parse("content://$AUTHORITY/$PATH")
 
 class NasaProvider : ContentProvider() {
 
@@ -50,7 +50,7 @@ class NasaProvider : ContentProvider() {
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         var id = repository.insert(values)
-        return ContentUris.withAppendedId(NASA_PROVIDER_URI, id)
+        return ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, id)
     }
 
     override fun onCreate(): Boolean {

@@ -44,7 +44,7 @@ class ItemPagerAdapter(private val context: Context, private val items: MutableL
         val item = items[position]
         holder.ivRead.setOnClickListener {
             item.read = !item.read
-            val uri = ContentUris.withAppendedId(NASA_PROVIDER_URI, item._id!!)
+            val uri = ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, item._id!!)
             val values = ContentValues().apply {
                 put(Item::read.name, item.read)
             }

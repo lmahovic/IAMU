@@ -14,7 +14,6 @@ import hr.algebra.boardgames.framework.startActivity
 import hr.algebra.boardgames.model.Item
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import java.io.File
-import java.nio.file.Files.delete
 
 class ItemsAdapter(private val context: Context, private val items: MutableList<Item>) :
     RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
@@ -60,7 +59,7 @@ class ItemsAdapter(private val context: Context, private val items: MutableList<
     private fun deleteItem(position: Int) {
         val item = items[position]
         context.contentResolver.delete(
-            ContentUris.withAppendedId(NASA_PROVIDER_URI, item._id!!),
+            ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, item._id!!),
             null,
             null
         )

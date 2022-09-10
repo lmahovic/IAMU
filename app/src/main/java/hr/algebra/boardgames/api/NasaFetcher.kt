@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.util.Log
 import hr.algebra.boardgames.DATA_IMPORTED
-import hr.algebra.boardgames.NASA_PROVIDER_URI
+import hr.algebra.boardgames.BOARD_GAMES_PROVIDER_URI
 import hr.algebra.boardgames.NasaReceiver
 import hr.algebra.boardgames.framework.sendBroadcast
 import hr.algebra.boardgames.framework.setBooleanProperty
@@ -66,7 +66,7 @@ class NasaFetcher(private val context: Context) {
                     put(Item::date.name, it.date)
                     put(Item::read.name, false)
                 }
-                context.contentResolver.insert(NASA_PROVIDER_URI, values);
+                context.contentResolver.insert(BOARD_GAMES_PROVIDER_URI, values);
 
 
             }

@@ -12,7 +12,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.core.content.getSystemService
 import androidx.preference.PreferenceManager
-import hr.algebra.boardgames.NASA_PROVIDER_URI
+import hr.algebra.boardgames.BOARD_GAMES_PROVIDER_URI
 import hr.algebra.boardgames.model.Item
 
 fun View.startAnimation(animationId: Int) =
@@ -60,7 +60,7 @@ fun Context.fetchItems(): MutableList<Item> {
     val items = mutableListOf<Item>()
 
     val cursor = contentResolver?.query(
-        NASA_PROVIDER_URI,
+        BOARD_GAMES_PROVIDER_URI,
         null,
         null,
         null,
