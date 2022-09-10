@@ -1,5 +1,8 @@
 package hr.algebra.boardgames.framework
 
+import android.animation.Animator
+import android.animation.AnimatorInflater
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -15,8 +18,14 @@ import androidx.preference.PreferenceManager
 import hr.algebra.boardgames.BOARD_GAMES_PROVIDER_URI
 import hr.algebra.boardgames.model.Item
 
-fun View.startAnimation(animationId: Int) =
-    startAnimation(AnimationUtils.loadAnimation(context, animationId))
+//fun View.startAnimation(animationId: Int) =
+//    startAnimation(AnimationUtils.loadAnimation(context, animationId))
+
+fun View.startAnimation(animationId: Int) : Animator {
+    val animator = AnimatorInflater.loadAnimator(context, animationId)
+    animator.setTarget(this)
+    return animator
+}
 
 inline fun <reified T : Activity> Context.startActivity(key: String = "", value: Int = 0) =
     startActivity(Intent(this, T::class.java).apply {
