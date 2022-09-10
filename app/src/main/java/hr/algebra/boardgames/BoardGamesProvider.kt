@@ -6,12 +6,11 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import hr.algebra.boardgames.dao.NasaRepository
-import hr.algebra.boardgames.dao.getNasaRepository
+import hr.algebra.boardgames.dao.BoardGamesRepository
+import hr.algebra.boardgames.dao.getBoardGameRepository
 import hr.algebra.boardgames.model.Item
-import java.lang.IllegalArgumentException
 
-private const val AUTHORITY = "hr.algebra.nasa.api.provider"
+private const val AUTHORITY = "hr.algebra.boardgames.api.provider"
 private const val PATH = "items"
 
 private const val ITEMS = 10
@@ -23,14 +22,14 @@ private val URI_MATCHER = with(UriMatcher(UriMatcher.NO_MATCH)) {
     this
 }
 
-val NASA_PROVIDER_URI = Uri.parse("content://$AUTHORITY/$PATH")
+val BOARD_GAMES_PROVIDER_URI: Uri = Uri.parse("content://$AUTHORITY/$PATH")
 
 class NasaProvider : ContentProvider() {
 
-    private lateinit var repository: NasaRepository
+    private lateinit var repository: BoardGamesRepository
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
-        when(URI_MATCHER.match(uri)) {
+        when (URI_MATCHER.match(uri)) {
             ITEMS -> return repository.delete(selection, selectionArgs)
             ITEM_ID -> {
                 uri.lastPathSegment?.let {
@@ -48,20 +47,21 @@ class NasaProvider : ContentProvider() {
         )
     }
 
-    override fun insert(uri: Uri, values: ContentValues?): Uri? {
-        var id = repository.insert(values)
-        return ContentUris.withAppendedId(NASA_PROVIDER_URI, id)
+    override fun insert(uri: Uri, values: ContentValues?): Uri {
+        val id = repository.insert(values)
+        return ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, id)
     }
 
     override fun onCreate(): Boolean {
-        repository = getNasaRepository(context)
+        repository = getBoardGameRepository(context)
         return true
     }
+
 
     override fun query(
         uri: Uri, projection: Array<String>?, selection: String?,
         selectionArgs: Array<String>?, sortOrder: String?
-    ): Cursor? = repository.query(
+    ): Cursor = repository.query(
         projection,
         selection,
         selectionArgs,
@@ -72,7 +72,7 @@ class NasaProvider : ContentProvider() {
         uri: Uri, values: ContentValues?, selection: String?,
         selectionArgs: Array<String>?
     ): Int {
-        when(URI_MATCHER.match(uri)) {
+        when (URI_MATCHER.match(uri)) {
             ITEMS -> return repository.update(values, selection, selectionArgs)
             ITEM_ID -> {
                 uri.lastPathSegment?.let {

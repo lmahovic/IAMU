@@ -11,9 +11,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Nasa">
+        android:theme="@style/Theme.BoardGames">
         <activity
             android:name="hr.algebra.boardgames.ItemPagerActivity"
+            android:label="Details"
             android:exported="false" />
 
         <provider
@@ -23,7 +24,7 @@
             android:exported="false" />
 
         <receiver
-            android:name="hr.algebra.boardgames.NasaReceiver"
+            android:name="hr.algebra.boardgames.BoardGamesReceiver"
             android:enabled="true"
             android:exported="false" />
 

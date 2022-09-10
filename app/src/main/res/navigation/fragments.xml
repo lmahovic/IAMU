@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragments"
-    app:startDestination="@id/menuItems">
+    app:startDestination="@id/menuFavourite">
 
     <fragment
-        android:id="@+id/menuItems"
-        android:name="hr.algebra.boardgames.ItemsFragment"
-        android:label="@string/items"
+        android:id="@+id/menuFavourite"
+        android:name="hr.algebra.boardgames.FavoritesFragment"
+        android:label="@string/favorites"
         tools:layout="@layout/fragment_items" />
 
     <fragment

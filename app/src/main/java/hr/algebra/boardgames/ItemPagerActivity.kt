@@ -1,7 +1,7 @@
 package hr.algebra.boardgames
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import hr.algebra.boardgames.databinding.ActivityItemPagerBinding
 import hr.algebra.boardgames.framework.fetchItems
 import hr.algebra.boardgames.model.Item

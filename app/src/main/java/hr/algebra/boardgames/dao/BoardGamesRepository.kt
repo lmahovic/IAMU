@@ -3,7 +3,7 @@ package hr.algebra.boardgames.dao
 import android.content.ContentValues
 import android.database.Cursor
 
-interface NasaRepository {
+interface BoardGamesRepository {
     fun delete(selection: String?, selectionArgs: Array<String>?): Int
 
     fun update(

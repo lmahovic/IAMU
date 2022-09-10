@@ -3,6 +3,7 @@ package hr.algebra.boardgames
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,19 +19,22 @@ class ItemPagerAdapter(private val context: Context, private val items: MutableL
     RecyclerView.Adapter<ItemPagerAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivItem = itemView.findViewById<ImageView>(R.id.ivItem)
-        val ivRead = itemView.findViewById<ImageView>(R.id.ivRead)
-        private val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
-        private val tvExplanation = itemView.findViewById<TextView>(R.id.tvExplanation)
-        private val tvDate = itemView.findViewById<TextView>(R.id.tvDate)
+        val ivRead: ImageView = itemView.findViewById(R.id.ivRead)
+        private val tvTitle = itemView.findViewById<TextView>(R.id.tvName)
+        private val tvExplanation = itemView.findViewById<TextView>(R.id.tvDescription)
+        private val tvDate = itemView.findViewById<TextView>(R.id.tvRank)
         fun bind(item: Item) {
-            tvTitle.text = item.title
-            tvExplanation.text = item.explanation
-            tvDate.text = item.date
+            tvTitle.text = item.name
+            tvExplanation.text = Html.fromHtml(
+                item.description,
+                Html.FROM_HTML_MODE_COMPACT,
+            )
+            tvDate.text = item.rank.toString()
             ivRead.setImageResource(if (item.read) R.drawable.green_flag else R.drawable.red_flag)
             Picasso.get()
                 .load(File(item.picturePath))
-                .error(R.drawable.nasa)
                 .transform(RoundedCornersTransformation(50, 5))
+                .error(R.drawable.nasa)
                 .into(ivItem)
         }
     }
@@ -44,7 +48,7 @@ class ItemPagerAdapter(private val context: Context, private val items: MutableL
         val item = items[position]
         holder.ivRead.setOnClickListener {
             item.read = !item.read
-            val uri = ContentUris.withAppendedId(NASA_PROVIDER_URI, item._id!!)
+            val uri = ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, item._id!!)
             val values = ContentValues().apply {
                 put(Item::read.name, item.read)
             }

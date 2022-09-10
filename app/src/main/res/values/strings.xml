@@ -1,18 +1,17 @@
 <resources>
-    <string name="app_name">Nasa</string>
-    <string name="please_wait">Please wait</string>
+    <string name="app_name">BoardGames</string>
+    <string name="loading">Loading…</string>
     <string name="no_internet">No internet</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="items">Items</string>
+    <string name="favorites">Favorites</string>
     <string name="about">About</string>
     <string name="exit">Exit</string>
     <string name="really">Really exit app?</string>
     <string name="cancel">Cancel</string>
-    <string name="application_made_by_algebra_students">Application made by Algebra students</string>
+    <string name="application_author">Application made by Lav Mahović</string>
     <string name="delete">Delete</string>
     <string name="sure">Are you sure to delete</string>
-    <string name="date">Date</string>
-    <string name="title">Title</string>
-    <string name="explanation">Explanation</string>
+    <string name="rank">Rank</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="stolen_from">(mostly stolen from prof. Bele)</string>
 </resources>

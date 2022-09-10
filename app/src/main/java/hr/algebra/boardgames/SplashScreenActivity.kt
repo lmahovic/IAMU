@@ -1,13 +1,14 @@
 package hr.algebra.boardgames
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import hr.algebra.boardgames.databinding.ActivitySplashScreenBinding
 import hr.algebra.boardgames.framework.*
 
 private const val DELAY = 3000L
-const val DATA_IMPORTED = "hr.algebra.nasa.data_imported"
+const val DATA_IMPORTED = "hr.algebra.boardgames.data_imported"
+
 class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
 
@@ -21,8 +22,8 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun startAnimations() {
-        binding.tvSplash.startAnimation(R.anim.blink)
-        binding.ivSplash.startAnimation(R.anim.rotate)
+        binding.tvSplash.startAnimation(R.animator.blink)
+        binding.ivSplash.startAnimation(R.animator.rotate)
     }
 
     private fun redirect() {
@@ -35,7 +36,8 @@ class SplashScreenActivity : AppCompatActivity() {
                 Intent(this, NasaService::class.java).apply {
                     NasaService.enqueue(
                         this@SplashScreenActivity,
-                        this)
+                        this
+                    )
                 }
             } else {
                 binding.tvSplash.text = getString(R.string.no_internet)

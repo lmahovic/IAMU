@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="@dimen/splashPadding"
@@ -12,13 +11,14 @@
         android:id="@+id/ivSplash"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/ivSplashHeight"
-        android:src="@drawable/flat_earth" />
+        android:src="@drawable/board_games" />
 
     <TextView
         android:id="@+id/tvSplash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/please_wait" />
+        android:text="@string/loading"
+        android:layout_marginTop="@dimen/nhMarginTop" />
 
 </LinearLayout>
