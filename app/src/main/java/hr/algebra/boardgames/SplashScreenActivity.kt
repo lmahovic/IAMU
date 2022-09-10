@@ -1,8 +1,5 @@
 package hr.algebra.boardgames
 
-import android.animation.AnimatorInflater
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,8 +21,8 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun startAnimations() {
-        binding.tvSplash.startAnimation(R.animator.blink).start()
-        binding.ivSplash.startAnimation(R.animator.rotate).start()
+        binding.tvSplash.startAnimation(R.animator.blink)
+        binding.ivSplash.startAnimation(R.animator.rotate)
     }
 
     private fun redirect() {
