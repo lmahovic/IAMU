@@ -1,17 +1,22 @@
 package hr.algebra.boardgames
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import hr.algebra.boardgames.databinding.ActivityHostBinding
 
 class HostActivity : AppCompatActivity() {
 
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHostBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,36 +24,52 @@ class HostActivity : AppCompatActivity() {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         binding = ActivityHostBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        initHamburgerMenu()
         initNavigation()
     }
 
-    private fun initHamburgerMenu() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+    private fun initNavigation() {
+
+//        cannot use viewBinding for compatibility purposes
+        val navHostFrag =
+            supportFragmentManager.findFragmentById(R.id.nav_host_frag) as NavHostFragment
+        val navController = navHostFrag.navController
+//        --define top level fragments (the ones where the hamburger menu is shown
+        appBarConfiguration =
+            AppBarConfiguration(setOf(R.id.menuFavourite), binding.drawerLayout)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        binding.navigationView.setupWithNavController(navController)
     }
 
-    private fun initNavigation() {
-        NavigationUI.setupWithNavController(
-            binding.navigationView,
-            Navigation.findNavController(this, R.id.navHostFragment),
-        )
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.host_menu, menu)
+        return true
+    }
+
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawers()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    //    detect icon changes for actionbar according to navigation
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_frag)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            android.R.id.home -> {
-                toggleDrawers()
-                return true
-            }
+        when (item.itemId) {
             R.id.menuExit -> {
                 exitApp()
                 return true
             }
-
         }
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -59,21 +80,8 @@ class HostActivity : AppCompatActivity() {
             setIcon(R.drawable.exit)
             setCancelable(true)
             setNegativeButton(getString(R.string.cancel), null)
-            setPositiveButton("Ok") { _, _ -> finish()}
+            setPositiveButton("Ok") { _, _ -> finish() }
             show()
         }
-    }
-
-    private fun toggleDrawers() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawers()
-        } else {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.host_menu, menu)
-        return true
     }
 }

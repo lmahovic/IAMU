@@ -11,7 +11,7 @@ import hr.algebra.boardgames.framework.fetchItems
 import hr.algebra.boardgames.model.Item
 
 
-class ItemsFragment : Fragment() {
+class FavoritesFragment : Fragment() {
 
     private lateinit var items: MutableList<Item>
     private lateinit var binding: FragmentItemsBinding

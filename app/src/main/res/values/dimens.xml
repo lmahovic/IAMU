@@ -4,12 +4,12 @@
     <dimen name="ivSplashHeight">400dp</dimen>
     <dimen name="splashTextSize">50sp</dimen>
     <dimen name="nhMarginTop">25dp</dimen>
-    <dimen name="nhHeight">100dp</dimen>
-    <dimen name="nhWidth">150dp</dimen>
+    <dimen name="nhHeight">200dp</dimen>
     <dimen name="nvWidth">162dp</dimen>
     <dimen name="nvHeight">240dp</dimen>
     <dimen name="paddingAbout">20dp</dimen>
-    <dimen name="aboutTextSize">50sp</dimen>
+    <dimen name="aboutTitleTextSize">40sp</dimen>
+    <dimen name="aboutFooterTextSize">20sp</dimen>
     <dimen name="cornerRadius">9dp</dimen>
     <dimen name="paddingItems">10dp</dimen>
     <dimen name="ivSize">50dp</dimen>
