@@ -10,11 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import hr.algebra.boardgames.model.Item
+import hr.algebra.boardgames.model.ListItem
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import java.io.File
 
-class ItemPagerAdapter(private val context: Context, private val items: MutableList<Item>) :
+class ItemPagerAdapter(private val context: Context, private val listItems: MutableList<ListItem>) :
     RecyclerView.Adapter<ItemPagerAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivItem = itemView.findViewById<ImageView>(R.id.ivItem)
@@ -22,13 +22,13 @@ class ItemPagerAdapter(private val context: Context, private val items: MutableL
         private val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
         private val tvExplanation = itemView.findViewById<TextView>(R.id.tvExplanation)
         private val tvDate = itemView.findViewById<TextView>(R.id.tvDate)
-        fun bind(item: Item) {
-            tvTitle.text = item.title
-            tvExplanation.text = item.explanation
-            tvDate.text = item.date
-            ivRead.setImageResource(if (item.read) R.drawable.green_flag else R.drawable.red_flag)
+        fun bind(listItem: ListItem) {
+            tvTitle.text = listItem.title
+            tvExplanation.text = listItem.explanation
+            tvDate.text = listItem.date
+            ivRead.setImageResource(if (listItem.read) R.drawable.green_flag else R.drawable.red_flag)
             Picasso.get()
-                .load(File(item.picturePath))
+                .load(File(listItem.picturePath))
                 .error(R.drawable.nasa)
                 .transform(RoundedCornersTransformation(50, 5))
                 .into(ivItem)
@@ -41,12 +41,12 @@ class ItemPagerAdapter(private val context: Context, private val items: MutableL
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+        val item = listItems[position]
         holder.ivRead.setOnClickListener {
             item.read = !item.read
             val uri = ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, item._id!!)
             val values = ContentValues().apply {
-                put(Item::read.name, item.read)
+                put(ListItem::read.name, item.read)
             }
             context.contentResolver.update(
                 uri,
@@ -59,5 +59,5 @@ class ItemPagerAdapter(private val context: Context, private val items: MutableL
         holder.bind(item)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = listItems.size
 }

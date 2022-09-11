@@ -8,7 +8,7 @@ import android.database.Cursor
 import android.net.Uri
 import hr.algebra.boardgames.dao.BoardGamesRepository
 import hr.algebra.boardgames.dao.getNasaRepository
-import hr.algebra.boardgames.model.Item
+import hr.algebra.boardgames.model.ListItem
 import java.lang.IllegalArgumentException
 
 private const val AUTHORITY = "hr.algebra.boardgames.api.provider"
@@ -34,7 +34,7 @@ class NasaProvider : ContentProvider() {
             ITEMS -> return repository.delete(selection, selectionArgs)
             ITEM_ID -> {
                 uri.lastPathSegment?.let {
-                    return repository.delete("${Item::_id.name}=?", arrayOf(it))
+                    return repository.delete("${ListItem::_id.name}=?", arrayOf(it))
                 }
             }
         }
@@ -76,7 +76,7 @@ class NasaProvider : ContentProvider() {
             ITEMS -> return repository.update(values, selection, selectionArgs)
             ITEM_ID -> {
                 uri.lastPathSegment?.let {
-                    return repository.update(values, "${Item::_id.name}=?", arrayOf(it))
+                    return repository.update(values, "${ListItem::_id.name}=?", arrayOf(it))
                 }
             }
         }

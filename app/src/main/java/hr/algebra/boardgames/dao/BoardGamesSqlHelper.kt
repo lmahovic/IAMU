@@ -5,7 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import hr.algebra.boardgames.model.Item
+import hr.algebra.boardgames.model.ListItem
 
 private const val DB_NAME = "items.db"
 private const val DB_VERSION = 1
@@ -13,12 +13,12 @@ private const val DB_VERSION = 1
 private const val TABLE = "items"
 
 private val CREATE = "create table $TABLE(" +
-        "${Item::_id.name} integer primary key autoincrement, " +
-        "${Item::title.name} text not null, " +
-        "${Item::explanation.name} text not null, " +
-        "${Item::picturePath.name} text not null, " +
-        "${Item::date.name} text not null, " +
-        "${Item::read.name} integer not null" +
+        "${ListItem::_id.name} integer primary key autoincrement, " +
+        "${ListItem::title.name} text not null, " +
+        "${ListItem::explanation.name} text not null, " +
+        "${ListItem::picturePath.name} text not null, " +
+        "${ListItem::date.name} text not null, " +
+        "${ListItem::read.name} integer not null" +
         ")"
 
 private const val DROP = "drop table $TABLE"

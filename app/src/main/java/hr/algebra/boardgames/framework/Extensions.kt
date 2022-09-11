@@ -10,10 +10,13 @@ import android.net.NetworkCapabilities
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.getSystemService
 import androidx.preference.PreferenceManager
 import hr.algebra.boardgames.BOARD_GAMES_PROVIDER_URI
-import hr.algebra.boardgames.model.Item
+import hr.algebra.boardgames.model.ListItem
+import retrofit2.Response
+import java.io.IOException
 
 fun View.startAnimation(animationId: Int) {
     val animator = AnimatorInflater.loadAnimator(context, animationId)
@@ -61,8 +64,8 @@ fun callDelayed(delay: Long, function: Runnable) {
     )
 }
 
-fun Context.fetchItems(): MutableList<Item> {
-    val items = mutableListOf<Item>()
+fun Context.fetchItems(): MutableList<ListItem> {
+    val listItems = mutableListOf<ListItem>()
 
     val cursor = contentResolver?.query(
         BOARD_GAMES_PROVIDER_URI,
@@ -72,17 +75,28 @@ fun Context.fetchItems(): MutableList<Item> {
         null
     )
     while (cursor != null && cursor.moveToNext()) {
-        items.add(
-            Item(
-                cursor.getLong(cursor.getColumnIndexOrThrow(Item::_id.name)),
-                cursor.getString(cursor.getColumnIndexOrThrow(Item::title.name)),
-                cursor.getString(cursor.getColumnIndexOrThrow(Item::explanation.name)),
-                cursor.getString(cursor.getColumnIndexOrThrow(Item::picturePath.name)),
-                cursor.getString(cursor.getColumnIndexOrThrow(Item::date.name)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(Item::read.name)) == 1
-            )
-        )
+//        items.add(
+//            Item(
+//                cursor.getLong(cursor.getColumnIndexOrThrow(Item::_id.name)),
+//                cursor.getString(cursor.getColumnIndexOrThrow(Item::title.name)),
+//                cursor.getString(cursor.getColumnIndexOrThrow(Item::explanation.name)),
+//                cursor.getString(cursor.getColumnIndexOrThrow(Item::picturePath.name)),
+//                cursor.getString(cursor.getColumnIndexOrThrow(Item::date.name)),
+//                cursor.getInt(cursor.getColumnIndexOrThrow(Item::read.name)) == 1
+//            )
+//        )
     }
 
-    return items
+    return listItems
 }
+
+fun Context.showConnectionErrorMessage(error: Throwable) =
+    if (error is IOException) {
+        Toast.makeText(this, "A connection error occured", Toast.LENGTH_LONG).show()
+    } else {
+        Toast.makeText(this, "Failed to retrieve items", Toast.LENGTH_LONG).show()
+    }
+
+fun Context.showStatusCodeErrorMessage(response: Response<*>) =
+    Toast.makeText(this, "Error status code received - ${response.code()}", Toast.LENGTH_LONG)
+        .show()
