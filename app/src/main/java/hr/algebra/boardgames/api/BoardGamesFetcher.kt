@@ -105,6 +105,7 @@ class BoardGamesFetcher(private val context: Context) {
                 val values = ContentValues().apply {
                     put(ListItem::name.name, it.name)
                     put(ListItem::rank.name, it.rank)
+                    put(ListItem::description.name, it.description)
                     put(ListItem::picturePath.name, picturePath ?: "")
                     put(ListItem::read.name, false)
                 }

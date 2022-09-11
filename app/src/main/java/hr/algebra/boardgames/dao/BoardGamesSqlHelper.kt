@@ -10,14 +10,14 @@ import hr.algebra.boardgames.model.ListItem
 private const val DB_NAME = "items.db"
 private const val DB_VERSION = 1
 
-private const val TABLE = "items"
+private const val TABLE = "list_items"
 
 private val CREATE = "create table $TABLE(" +
         "${ListItem::_id.name} integer primary key autoincrement, " +
-        "${ListItem::title.name} text not null, " +
-        "${ListItem::explanation.name} text not null, " +
+        "${ListItem::name.name} text not null, " +
+        "${ListItem::description.name} text not null, " +
+        "${ListItem::rank.name} integer not null, " +
         "${ListItem::picturePath.name} text not null, " +
-        "${ListItem::date.name} text not null, " +
         "${ListItem::read.name} integer not null" +
         ")"
 

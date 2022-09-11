@@ -7,7 +7,7 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
 import hr.algebra.boardgames.dao.BoardGamesRepository
-import hr.algebra.boardgames.dao.getNasaRepository
+import hr.algebra.boardgames.dao.getBoardGameRepository
 import hr.algebra.boardgames.model.ListItem
 import java.lang.IllegalArgumentException
 
@@ -48,20 +48,22 @@ class NasaProvider : ContentProvider() {
         )
     }
 
-    override fun insert(uri: Uri, values: ContentValues?): Uri? {
-        var id = repository.insert(values)
+    override fun insert(uri: Uri, values: ContentValues?): Uri {
+        val id = repository.insert(values)
         return ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, id)
     }
 
     override fun onCreate(): Boolean {
-        repository = getNasaRepository(context)
+        repository = getBoardGameRepository(context)
         return true
     }
+
+
 
     override fun query(
         uri: Uri, projection: Array<String>?, selection: String?,
         selectionArgs: Array<String>?, sortOrder: String?
-    ): Cursor? = repository.query(
+    ): Cursor = repository.query(
         projection,
         selection,
         selectionArgs,
