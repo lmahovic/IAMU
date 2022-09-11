@@ -75,17 +75,18 @@ fun Context.fetchItems(): MutableList<ListItem> {
         null
     )
     while (cursor != null && cursor.moveToNext()) {
-//        items.add(
-//            Item(
-//                cursor.getLong(cursor.getColumnIndexOrThrow(Item::_id.name)),
-//                cursor.getString(cursor.getColumnIndexOrThrow(Item::title.name)),
-//                cursor.getString(cursor.getColumnIndexOrThrow(Item::explanation.name)),
-//                cursor.getString(cursor.getColumnIndexOrThrow(Item::picturePath.name)),
-//                cursor.getString(cursor.getColumnIndexOrThrow(Item::date.name)),
-//                cursor.getInt(cursor.getColumnIndexOrThrow(Item::read.name)) == 1
-//            )
-//        )
+        listItems.add(
+            ListItem(
+                cursor.getLong(cursor.getColumnIndexOrThrow(ListItem::_id.name)),
+                cursor.getString(cursor.getColumnIndexOrThrow(ListItem::name.name)),
+                cursor.getString(cursor.getColumnIndexOrThrow(ListItem::description.name)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(ListItem::rank.name)),
+                cursor.getString(cursor.getColumnIndexOrThrow(ListItem::picturePath.name)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(ListItem::read.name)) == 1
+            )
+        )
     }
+    cursor?.close()
 
     return listItems
 }
@@ -94,9 +95,9 @@ fun Context.showConnectionErrorMessage(error: Throwable) =
     if (error is IOException) {
         Toast.makeText(this, "A connection error occured", Toast.LENGTH_LONG).show()
     } else {
-        Toast.makeText(this, "Failed to retrieve items", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Failed to retrieve items ", Toast.LENGTH_LONG).show()
     }
 
 fun Context.showStatusCodeErrorMessage(response: Response<*>) =
-    Toast.makeText(this, "Error status code received - ${response.code()}", Toast.LENGTH_LONG)
+    Toast.makeText(this, "Error status code received - ${response.code()} Error message - ${response.message()}", Toast.LENGTH_LONG)
         .show()

@@ -14,7 +14,7 @@
             android:id="@+id/ivItem"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ivHeight"
-            tools:src="@drawable/flat_about" />
+            tools:src="@drawable/board_games_about" />
 
         <LinearLayout
             android:layout_width="match_parent"

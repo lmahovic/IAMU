@@ -3,6 +3,7 @@ package hr.algebra.boardgames
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,14 +19,17 @@ class ItemPagerAdapter(private val context: Context, private val listItems: Muta
     RecyclerView.Adapter<ItemPagerAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivItem = itemView.findViewById<ImageView>(R.id.ivItem)
-        val ivRead = itemView.findViewById<ImageView>(R.id.ivRead)
+        val ivRead: ImageView = itemView.findViewById(R.id.ivRead)
         private val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
         private val tvExplanation = itemView.findViewById<TextView>(R.id.tvExplanation)
         private val tvDate = itemView.findViewById<TextView>(R.id.tvDate)
         fun bind(listItem: ListItem) {
-            tvTitle.text = listItem.title
-            tvExplanation.text = listItem.explanation
-            tvDate.text = listItem.date
+            tvTitle.text = listItem.name
+            tvExplanation.text = Html.fromHtml(
+                listItem.description,
+                Html.FROM_HTML_MODE_COMPACT,
+            )
+            tvDate.text = listItem.rank.toString()
             ivRead.setImageResource(if (listItem.read) R.drawable.green_flag else R.drawable.red_flag)
             Picasso.get()
                 .load(File(listItem.picturePath))

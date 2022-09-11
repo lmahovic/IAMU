@@ -12,9 +12,10 @@
     <dimen name="aboutFooterTextSize">20sp</dimen>
     <dimen name="cornerRadius">9dp</dimen>
     <dimen name="paddingItems">10dp</dimen>
-    <dimen name="ivSize">50dp</dimen>
+    <dimen name="ivSize">75dp</dimen>
     <dimen name="textSize">20sp</dimen>
-    <dimen name="marginLeft">20dp</dimen>
     <dimen name="ivHeight">300dp</dimen>
     <dimen name="marginTopDate">20dp</dimen>
+    <dimen name="marginStart">20dp</dimen>
+    <dimen name="card_elevation">10dp</dimen>
 </resources>

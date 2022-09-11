@@ -6,6 +6,6 @@ data class ListItem(
     val description: String,
     val rank: Int,
     val picturePath: String,
-    val read: Boolean
+    var read: Boolean
 
 )

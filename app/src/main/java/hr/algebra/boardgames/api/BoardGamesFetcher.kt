@@ -70,14 +70,14 @@ class BoardGamesFetcher(private val context: Context) {
     fun fetchItems() {
         val request = boardGamesApi.fetchItems()
 
-        request.enqueue(object : Callback<List<BoardGamesListItem>> {
+        request.enqueue(object : Callback<BoardGamesResponse> {
             override fun onResponse(
-                call: Call<List<BoardGamesListItem>>,
-                response: Response<List<BoardGamesListItem>>
+                call: Call<BoardGamesResponse>,
+                response: Response<BoardGamesResponse>
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        populateItems(it)
+                        populateItems(it.games)
                     }
                 } else {
                     context.showStatusCodeErrorMessage(response)
@@ -85,7 +85,7 @@ class BoardGamesFetcher(private val context: Context) {
 
             }
 
-            override fun onFailure(call: Call<List<BoardGamesListItem>>, t: Throwable) {
+            override fun onFailure(call: Call<BoardGamesResponse>, t: Throwable) {
                 context.showConnectionErrorMessage(t)
             }
 

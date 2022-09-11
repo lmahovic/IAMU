@@ -21,7 +21,7 @@ class ItemsAdapter(private val context: Context, private val listItems: MutableL
         private val ivItem = itemView.findViewById<ImageView>(R.id.ivItem)
         private val tvItem = itemView.findViewById<TextView>(R.id.tvItem)
         fun bind(listItem: ListItem) {
-            tvItem.text = listItem.title
+            tvItem.text = listItem.name
             Picasso.get()
                 .load(File(listItem.picturePath))
                 .error(R.drawable.nasa)
@@ -30,17 +30,15 @@ class ItemsAdapter(private val context: Context, private val listItems: MutableL
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(context).inflate(R.layout.item, parent, false)
-        return ViewHolder(itemView)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(LayoutInflater.from(context).inflate(R.layout.item, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = listItems[position]
         holder.itemView.setOnLongClickListener {
             AlertDialog.Builder(context).apply {
                 setTitle(R.string.delete)
-                setMessage(context.getString(R.string.sure) + " '${item.title}'?")
+                setMessage(context.getString(R.string.sure) + " '${item.name}'?")
                 setIcon(R.drawable.delete)
                 setCancelable(true)
                 setNegativeButton(R.string.cancel, null)
