@@ -6,7 +6,7 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import hr.algebra.boardgames.dao.NasaRepository
+import hr.algebra.boardgames.dao.BoardGamesRepository
 import hr.algebra.boardgames.dao.getNasaRepository
 import hr.algebra.boardgames.model.Item
 import java.lang.IllegalArgumentException
@@ -27,7 +27,7 @@ val BOARD_GAMES_PROVIDER_URI: Uri = Uri.parse("content://$AUTHORITY/$PATH")
 
 class NasaProvider : ContentProvider() {
 
-    private lateinit var repository: NasaRepository
+    private lateinit var repository: BoardGamesRepository
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
         when(URI_MATCHER.match(uri)) {

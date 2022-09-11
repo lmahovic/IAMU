@@ -23,14 +23,6 @@ fun View.startAnimation(animationId: Int) {
     }
 }
 
-inline fun <reified T : Activity> Context.startActivity(key: String = "", value: Int = 0) =
-    startActivity(Intent(this, T::class.java).apply {
-        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        if (key.isNotBlank()) {
-            putExtra(key, value)
-        }
-    })
-
 fun Context.setBooleanProperty(key: String, value: Boolean) =
     PreferenceManager.getDefaultSharedPreferences(this)
         .edit()
@@ -50,6 +42,14 @@ fun Context.isOnline(): Boolean {
     }
     return false
 }
+
+inline fun <reified T : Activity> Context.startActivity(key: String = "", value: Int = 0) =
+    startActivity(Intent(this, T::class.java).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        if (key.isNotBlank()) {
+            putExtra(key, value)
+        }
+    })
 
 inline fun <reified T : BroadcastReceiver> Context.sendBroadcast() =
     sendBroadcast(Intent(this, T::class.java))

@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.Log
 import hr.algebra.boardgames.DATA_IMPORTED
 import hr.algebra.boardgames.BOARD_GAMES_PROVIDER_URI
-import hr.algebra.boardgames.NasaReceiver
+import hr.algebra.boardgames.BoardGamesReceiver
 import hr.algebra.boardgames.framework.sendBroadcast
 import hr.algebra.boardgames.framework.setBooleanProperty
 import hr.algebra.boardgames.handler.downloadImageAndStore
@@ -18,42 +18,42 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class NasaFetcher(private val context: Context) {
+class BoardGamesFetcher(private val context: Context) {
 
-    private var nasaApi: NasaApi
+    private var boardGamesApi: BoardGamesApi
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        nasaApi = retrofit.create(NasaApi::class.java)
+        boardGamesApi = retrofit.create(BoardGamesApi::class.java)
     }
 
     fun fetchItems() {
-        val request = nasaApi.fetchItems()
+        val request = boardGamesApi.fetchItems()
 
-        request.enqueue(object: Callback<List<NasaItem>> {
+        request.enqueue(object: Callback<List<BoardGamesItem>> {
             override fun onResponse(
-                call: Call<List<NasaItem>>,
-                response: Response<List<NasaItem>>
+                call: Call<List<BoardGamesItem>>,
+                response: Response<List<BoardGamesItem>>
             ) {
                 response.body()?.let {
                     populateItems(it)
                 }
             }
 
-            override fun onFailure(call: Call<List<NasaItem>>, t: Throwable) {
+            override fun onFailure(call: Call<List<BoardGamesItem>>, t: Throwable) {
                 Log.d(javaClass.name, t.message, t)
             }
 
         })
     }
 
-    private fun populateItems(nasaItems: List<NasaItem>) {
+    private fun populateItems(boardGamesItems: List<BoardGamesItem>) {
 
         GlobalScope.launch {
 
-             nasaItems.forEach {
+             boardGamesItems.forEach {
                 val picturePath = downloadImageAndStore(
                     context,
                     it.url,
@@ -72,7 +72,7 @@ class NasaFetcher(private val context: Context) {
             }
 
             context.setBooleanProperty(DATA_IMPORTED, true)
-            context.sendBroadcast<NasaReceiver>()
+            context.sendBroadcast<BoardGamesReceiver>()
         }
     }
 

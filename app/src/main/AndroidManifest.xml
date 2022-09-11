@@ -23,7 +23,7 @@
             android:exported="false" />
 
         <receiver
-            android:name="hr.algebra.boardgames.NasaReceiver"
+            android:name="hr.algebra.boardgames.BoardGamesReceiver"
             android:enabled="true"
             android:exported="false" />
 

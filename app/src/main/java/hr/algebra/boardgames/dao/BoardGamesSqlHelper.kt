@@ -24,9 +24,9 @@ private val CREATE = "create table $TABLE(" +
 private const val DROP = "drop table $TABLE"
 
 
-class NasaSqlHelper(
+class BoardGamesSqlHelper(
     context: Context?,
-) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION), NasaRepository {
+) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION), BoardGamesRepository {
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE)

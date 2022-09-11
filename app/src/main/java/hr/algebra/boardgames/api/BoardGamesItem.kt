@@ -2,7 +2,7 @@ package hr.algebra.boardgames.api
 
 import com.google.gson.annotations.SerializedName
 
-data class NasaItem(
+data class BoardGamesItem(
 
     @SerializedName("date") val date : String,
     @SerializedName("explanation") val explanation : String,

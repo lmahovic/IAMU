@@ -19,7 +19,7 @@ class ItemsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         items = requireContext().fetchItems()
         binding = FragmentItemsBinding.inflate(inflater, container, false)
         return binding.root

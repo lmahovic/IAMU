@@ -7,7 +7,7 @@ import hr.algebra.boardgames.databinding.ActivitySplashScreenBinding
 import hr.algebra.boardgames.framework.*
 
 private const val DELAY = 3000L
-const val DATA_IMPORTED = "hr.algebra.nasa.data_imported"
+const val DATA_IMPORTED = "hr.algebra.boardgames.data_imported"
 class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
 
