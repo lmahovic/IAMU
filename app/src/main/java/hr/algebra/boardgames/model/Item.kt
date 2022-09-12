@@ -2,10 +2,13 @@ package hr.algebra.boardgames.model
 
 data class Item(
     var _id: Long?,
+    var apiId: String,
     val name: String,
-    val description: String,
-    val rank: Int,
     val picturePath: String,
-    var read: Boolean
-
+    val description: String,
+    val playerCount: String,
+    val playtimeRange: String,
+    val rank: Int,
+    var read: Boolean,
+    var isFavourite: Boolean
 )

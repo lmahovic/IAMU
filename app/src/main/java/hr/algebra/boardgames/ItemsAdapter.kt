@@ -17,18 +17,6 @@ import java.io.File
 
 class ItemsAdapter(private val context: Context, private val items: MutableList<Item>) :
     RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val ivItem = itemView.findViewById<ImageView>(R.id.ivItem)
-        private val tvItem = itemView.findViewById<TextView>(R.id.tvItem)
-        fun bind(item: Item) {
-            tvItem.text = item.name
-            Picasso.get()
-                .load(File(item.picturePath))
-                .error(R.drawable.nasa)
-                .transform(RoundedCornersTransformation(50, 5))
-                .into(ivItem)
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(LayoutInflater.from(context).inflate(R.layout.item, parent, false))
@@ -47,11 +35,44 @@ class ItemsAdapter(private val context: Context, private val items: MutableList<
             }
             true
         }
+        holder.itemView.findViewById<ImageView>(R.id.ivFavorite).setOnClickListener {
+            item.isFavourite = !item.isFavourite
+            notifyItemChanged(position)
+        }
+
         holder.itemView.setOnClickListener {
             context.startActivity<ItemPagerActivity>(ITEM_POSITION, position)
         }
 
         holder.bind(item)
+    }
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val ivItemImage = itemView.findViewById<ImageView>(R.id.ivItemImage)
+        private val tvItemName = itemView.findViewById<TextView>(R.id.tvItemName)
+        private val tvRank = itemView.findViewById<TextView>(R.id.tvRank)
+        private val tvPlayerCount = itemView.findViewById<TextView>(R.id.tvPlayerCount)
+        private val tvPlayTime = itemView.findViewById<TextView>(R.id.tvPlayTime)
+        private val ivFavorite = itemView.findViewById<ImageView>(R.id.ivFavorite)
+        fun bind(item: Item) {
+            tvItemName.text = item.name
+            tvRank.text = item.rank.toString()
+            tvPlayerCount.text = item.playerCount
+            tvPlayTime.text = item.playtimeRange
+            ivFavorite.setImageResource(
+                if (item.isFavourite) {
+                    R.drawable.ic_favorite
+                } else {
+                    R.drawable.ic_favorite_border
+                }
+            )
+
+            Picasso.get()
+                .load(File(item.picturePath))
+                .error(R.drawable.board_games_about)
+                .transform(RoundedCornersTransformation(50, 5))
+                .into(ivItemImage)
+        }
     }
 
     private fun deleteItem(position: Int) {
@@ -63,7 +84,8 @@ class ItemsAdapter(private val context: Context, private val items: MutableList<
         )
         File(item.picturePath).delete()
         items.removeAt(position)
-        notifyDataSetChanged() // observable kick
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, items.size)
     }
 
     override fun getItemCount() = items.size

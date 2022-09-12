@@ -103,10 +103,13 @@ class BoardGamesFetcher(private val context: Context) {
                     it.name.replace(" ", "_")
                 )
                 val values = ContentValues().apply {
+                    put(Item::apiId.name, it.id)
                     put(Item::name.name, it.name)
-                    put(Item::rank.name, it.rank)
-                    put(Item::description.name, it.description)
                     put(Item::picturePath.name, picturePath ?: "")
+                    put(Item::description.name, it.description)
+                    put(Item::playerCount.name, it.playerCount)
+                    put(Item::playtimeRange.name, it.playtimeRange)
+                    put(Item::rank.name, it.rank)
                     put(Item::read.name, false)
                 }
                 context.contentResolver.insert(BOARD_GAMES_PROVIDER_URI, values)

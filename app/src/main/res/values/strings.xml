@@ -10,8 +10,10 @@
     <string name="application_author">Application made by Lav Mahović</string>
     <string name="delete">Delete</string>
     <string name="sure">Are you sure to delete</string>
-    <string name="rank">Rank</string>
+    <string name="rank">69</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="stolen_from">(mostly stolen from prof. Bele)</string>
+    <string name="playerCount">1–5</string>
+    <string name="playTime">90-120</string>
 </resources>

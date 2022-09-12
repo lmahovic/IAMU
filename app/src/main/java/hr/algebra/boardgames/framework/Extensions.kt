@@ -78,11 +78,15 @@ fun Context.fetchItems(): MutableList<Item> {
         items.add(
             Item(
                 cursor.getLong(cursor.getColumnIndexOrThrow(Item::_id.name)),
+                cursor.getString(cursor.getColumnIndexOrThrow(Item::apiId.name)),
                 cursor.getString(cursor.getColumnIndexOrThrow(Item::name.name)),
-                cursor.getString(cursor.getColumnIndexOrThrow(Item::description.name)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(Item::rank.name)),
                 cursor.getString(cursor.getColumnIndexOrThrow(Item::picturePath.name)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(Item::read.name)) == 1
+                cursor.getString(cursor.getColumnIndexOrThrow(Item::description.name)),
+                cursor.getString(cursor.getColumnIndexOrThrow(Item::playerCount.name)),
+                cursor.getString(cursor.getColumnIndexOrThrow(Item::playtimeRange.name)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(Item::rank.name)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(Item::read.name)) == 1,
+                true
             )
         )
     }

@@ -11,7 +11,7 @@
         android:padding="@dimen/paddingItems">
 
         <ImageView
-            android:id="@+id/ivItem"
+            android:id="@+id/ivItemImage"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ivHeight"
             tools:src="@drawable/board_games_about" />

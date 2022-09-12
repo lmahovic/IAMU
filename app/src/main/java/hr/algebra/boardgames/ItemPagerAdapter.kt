@@ -18,7 +18,7 @@ import java.io.File
 class ItemPagerAdapter(private val context: Context, private val items: MutableList<Item>) :
     RecyclerView.Adapter<ItemPagerAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val ivItem = itemView.findViewById<ImageView>(R.id.ivItem)
+        private val ivItem = itemView.findViewById<ImageView>(R.id.ivItemImage)
         val ivRead: ImageView = itemView.findViewById(R.id.ivRead)
         private val tvTitle = itemView.findViewById<TextView>(R.id.tvName)
         private val tvExplanation = itemView.findViewById<TextView>(R.id.tvDescription)
@@ -34,7 +34,7 @@ class ItemPagerAdapter(private val context: Context, private val items: MutableL
             Picasso.get()
                 .load(File(item.picturePath))
                 .transform(RoundedCornersTransformation(50, 5))
-                .error(R.drawable.nasa)
+                .error(R.drawable.board_games_about)
                 .into(ivItem)
         }
     }

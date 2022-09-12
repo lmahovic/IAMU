@@ -1,35 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
     app:cardBackgroundColor="@color/white"
-    app:cardUseCompatPadding="true"
     app:cardCornerRadius="@dimen/cornerRadius"
-    app:cardElevation="@dimen/card_elevation">
+    app:cardElevation="@dimen/card_elevation"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
-        android:padding="@dimen/paddingItems"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/paddingItems">
 
         <ImageView
-            android:id="@+id/ivItem"
+            android:id="@+id/ivItemImage"
             android:layout_width="@dimen/ivSize"
             android:layout_height="@dimen/ivSize"
             tools:src="@drawable/board_games_nav_drawer_header" />
 
-        <TextView
-            android:id="@+id/tvItem"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/ivSize"
-            android:gravity="center_vertical"
             android:layout_marginStart="@dimen/marginStart"
-            android:textSize="@dimen/textSize"
-            android:textColor="@color/black"
-            tools:text="Picture of the day" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvItemName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/itemTextHeight"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSize"
+                tools:text="Picture of the day" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/itemFavouriteSize">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/itemIconsSize"
+                        android:layout_height="@dimen/itemIconsSize"
+                        android:src="@drawable/ic_star" />
+
+                    <TextView
+                        android:id="@+id/tvRank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/itemIconsSize"
+                        android:layout_marginEnd="4dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="@string/rank" />
+
+                    <ImageView
+                        android:layout_width="@dimen/itemIconsSize"
+                        android:layout_height="@dimen/itemIconsSize"
+                        android:src="@drawable/ic_person" />
+
+                    <TextView
+                        android:id="@+id/tvPlayerCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/itemIconsSize"
+                        android:layout_marginEnd="4dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="@string/playerCount" />
+
+                    <ImageView
+                        android:layout_width="@dimen/itemIconsSize"
+                        android:layout_height="@dimen/itemIconsSize"
+                        android:src="@drawable/ic_hourglass" />
+
+                    <TextView
+                        android:id="@+id/tvPlayTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/itemIconsSize"
+                        android:layout_marginEnd="4dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="@string/playTime" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivFavorite"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/itemFavouriteSize"
+                    tools:src="@drawable/ic_favorite_border" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
 
     </LinearLayout>

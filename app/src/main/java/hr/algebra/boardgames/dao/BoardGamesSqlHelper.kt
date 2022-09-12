@@ -14,10 +14,13 @@ private const val TABLE = "list_items"
 
 private val CREATE = "create table $TABLE(" +
         "${Item::_id.name} integer primary key autoincrement, " +
+        "${Item::apiId.name} text not null, " +
         "${Item::name.name} text not null, " +
-        "${Item::description.name} text not null, " +
-        "${Item::rank.name} integer not null, " +
         "${Item::picturePath.name} text not null, " +
+        "${Item::description.name} text not null, " +
+        "${Item::playerCount.name} text not null, " +
+        "${Item::playtimeRange.name} text not null, " +
+        "${Item::rank.name} integer not null, " +
         "${Item::read.name} integer not null" +
         ")"
 
