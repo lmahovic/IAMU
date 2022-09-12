@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:text="@string/rank"
                 android:textColor="@color/design_default_color_primary"
                 android:textSize="@dimen/item_details_header_text_size"
@@ -44,7 +44,7 @@
             <TextView
                 android:id="@+id/tvRank"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/item_details_header_text_size"
                 tools:text="1" />

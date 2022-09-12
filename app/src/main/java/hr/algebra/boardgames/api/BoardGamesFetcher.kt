@@ -107,8 +107,8 @@ class BoardGamesFetcher(private val context: Context) {
                     put(Item::name.name, it.name)
                     put(Item::picturePath.name, picturePath ?: "")
                     put(Item::description.name, it.description)
-                    put(Item::playerCount.name, it.playerCount)
-                    put(Item::playtimeRange.name, it.playtimeRange)
+                    put(Item::playerCount.name, it.playerCount ?: "n/a")
+                    put(Item::playtimeRange.name, it.playtimeRange ?: "n/a")
                     put(Item::rank.name, it.rank)
                     put(Item::read.name, false)
                 }

@@ -10,6 +10,6 @@ const val API_CLIENT_KEY_PARAMETER_NAME = "client_id"
 const val API_CLIENT_KEY_PARAMETER_VALUE = "FeykxfqCLi"
 
 interface BoardGamesApi {
-    @GET("search?limit=10&order_by=rank")
+    @GET("search?limit=20&order_by=rank&name=Carcassonne&fuzzy_match=true")
     fun fetchItems(): Call<BoardGamesSearchResponse>
 }

@@ -14,7 +14,7 @@ private const val TABLE = "list_items"
 
 private val CREATE = "create table $TABLE(" +
         "${Item::_id.name} integer primary key autoincrement, " +
-        "${Item::apiId.name} text not null, " +
+        "${Item::apiId.name} text not null unique, " +
         "${Item::name.name} text not null, " +
         "${Item::picturePath.name} text not null, " +
         "${Item::description.name} text not null, " +

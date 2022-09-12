@@ -25,16 +25,18 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/ivSize"
             android:layout_marginStart="@dimen/marginStart"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/tvItemName"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/itemTextHeight"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textSize"
-                tools:text="Picture of the day" />
+                tools:text="Picture of the day"
+                android:layout_marginBottom="@dimen/descriptionMargin"/>
 
 
             <LinearLayout
