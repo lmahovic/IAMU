@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/menuFavourite"
         android:name="hr.algebra.boardgames.FavoritesFragment"
-        android:label="@string/favorites"
-        tools:layout="@layout/fragment_items" />
+        android:label="@string/favorite_games"
+        tools:layout="@layout/fragment_favorites" />
 
     <fragment
         android:id="@+id/menuAbout"

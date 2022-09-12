@@ -72,7 +72,7 @@
                         android:layout_marginEnd="4dp"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        tools:text="@string/playerCount" />
+                        tools:text="@string/playerCountPlaceholder" />
 
                     <ImageView
                         android:layout_width="@dimen/itemIconsSize"
@@ -86,7 +86,7 @@
                         android:layout_marginEnd="4dp"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        tools:text="@string/playTime" />
+                        tools:text="@string/playTimePlaceholder" />
 
                 </LinearLayout>
 

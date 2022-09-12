@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import hr.algebra.boardgames.framework.startActivity
@@ -37,6 +38,12 @@ class ItemsAdapter(private val context: Context, private val items: MutableList<
         }
         holder.itemView.findViewById<ImageView>(R.id.ivFavorite).setOnClickListener {
             item.isFavourite = !item.isFavourite
+            val message = if (item.isFavourite) {
+                "Game added to favorite games!"
+            } else {
+                "Game removed from favorite games!"
+            }
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             notifyItemChanged(position)
         }
 

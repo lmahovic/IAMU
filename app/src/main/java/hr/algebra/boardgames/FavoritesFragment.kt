@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import hr.algebra.boardgames.databinding.FragmentItemsBinding
+import hr.algebra.boardgames.databinding.FragmentFavoritesBinding
 import hr.algebra.boardgames.framework.fetchItems
 import hr.algebra.boardgames.model.Item
 
@@ -14,14 +14,14 @@ import hr.algebra.boardgames.model.Item
 class FavoritesFragment : Fragment() {
 
     private lateinit var items: MutableList<Item>
-    private lateinit var binding: FragmentItemsBinding
+    private lateinit var binding: FragmentFavoritesBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         items = requireContext().fetchItems()
-        binding = FragmentItemsBinding.inflate(inflater, container, false)
+        binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 

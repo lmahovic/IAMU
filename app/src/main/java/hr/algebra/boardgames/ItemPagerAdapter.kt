@@ -1,7 +1,5 @@
 package hr.algebra.boardgames
 
-import android.content.ContentUris
-import android.content.ContentValues
 import android.content.Context
 import android.text.Html
 import android.view.LayoutInflater
@@ -9,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import hr.algebra.boardgames.model.Item
@@ -19,18 +18,32 @@ class ItemPagerAdapter(private val context: Context, private val items: MutableL
     RecyclerView.Adapter<ItemPagerAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivItem = itemView.findViewById<ImageView>(R.id.ivItemImage)
-        val ivRead: ImageView = itemView.findViewById(R.id.ivRead)
+        private val ivFavorite = itemView.findViewById<ImageView>(R.id.ivFavorite)
         private val tvTitle = itemView.findViewById<TextView>(R.id.tvName)
-        private val tvExplanation = itemView.findViewById<TextView>(R.id.tvDescription)
-        private val tvDate = itemView.findViewById<TextView>(R.id.tvRank)
+        private val tvRank = itemView.findViewById<TextView>(R.id.tvRank)
+        private val tvPlayerCount = itemView.findViewById<TextView>(R.id.tvPlayerCount)
+        private val tvPlayTime = itemView.findViewById<TextView>(R.id.tvPlayTime)
+        private val tvDescription = itemView.findViewById<TextView>(R.id.tvDescription)
         fun bind(item: Item) {
             tvTitle.text = item.name
-            tvExplanation.text = Html.fromHtml(
+            tvRank.text = item.rank.toString()
+            tvPlayerCount.text = item.playerCount
+            tvPlayTime.text = item.playtimeRange
+
+            tvDescription.text = Html.fromHtml(
                 item.description,
                 Html.FROM_HTML_MODE_COMPACT,
             )
-            tvDate.text = item.rank.toString()
-            ivRead.setImageResource(if (item.read) R.drawable.green_flag else R.drawable.red_flag)
+
+            ivFavorite.setImageResource(
+                if (item.isFavourite) {
+                    R.drawable.ic_favorite
+                } else {
+                    R.drawable.ic_favorite_border
+                }
+            )
+            tvRank.text = item.rank.toString()
+//            ivRead.setImageResource(if (item.read) R.drawable.green_flag else R.drawable.red_flag)
             Picasso.get()
                 .load(File(item.picturePath))
                 .transform(RoundedCornersTransformation(50, 5))
@@ -46,18 +59,28 @@ class ItemPagerAdapter(private val context: Context, private val items: MutableL
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.ivRead.setOnClickListener {
-            item.read = !item.read
-            val uri = ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, item._id!!)
-            val values = ContentValues().apply {
-                put(Item::read.name, item.read)
+//        holder.ivRead.setOnClickListener {
+//            item.read = !item.read
+//            val uri = ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, item._id!!)
+//            val values = ContentValues().apply {
+//                put(Item::read.name, item.read)
+//            }
+//            context.contentResolver.update(
+//                uri,
+//                values,
+//                null,
+//                null
+//            )
+//            notifyItemChanged(position)
+//        }
+        holder.itemView.findViewById<ImageView>(R.id.ivFavorite).setOnClickListener {
+            item.isFavourite = !item.isFavourite
+            val message = if (item.isFavourite) {
+                "Game added to favorite games!"
+            } else {
+                "Game removed from favorite games!"
             }
-            context.contentResolver.update(
-                uri,
-                values,
-                null,
-                null
-            )
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             notifyItemChanged(position)
         }
         holder.bind(item)
