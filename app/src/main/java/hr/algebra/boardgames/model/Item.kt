@@ -1,6 +1,6 @@
 package hr.algebra.boardgames.model
 
-data class ListItem(
+data class Item(
     var _id: Long?,
     val name: String,
     val description: String,

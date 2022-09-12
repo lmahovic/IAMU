@@ -11,19 +11,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import hr.algebra.boardgames.framework.startActivity
-import hr.algebra.boardgames.model.ListItem
+import hr.algebra.boardgames.model.Item
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import java.io.File
 
-class ItemsAdapter(private val context: Context, private val listItems: MutableList<ListItem>) :
+class ItemsAdapter(private val context: Context, private val items: MutableList<Item>) :
     RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivItem = itemView.findViewById<ImageView>(R.id.ivItem)
         private val tvItem = itemView.findViewById<TextView>(R.id.tvItem)
-        fun bind(listItem: ListItem) {
-            tvItem.text = listItem.name
+        fun bind(item: Item) {
+            tvItem.text = item.name
             Picasso.get()
-                .load(File(listItem.picturePath))
+                .load(File(item.picturePath))
                 .error(R.drawable.nasa)
                 .transform(RoundedCornersTransformation(50, 5))
                 .into(ivItem)
@@ -34,7 +34,7 @@ class ItemsAdapter(private val context: Context, private val listItems: MutableL
         ViewHolder(LayoutInflater.from(context).inflate(R.layout.item, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = listItems[position]
+        val item = items[position]
         holder.itemView.setOnLongClickListener {
             AlertDialog.Builder(context).apply {
                 setTitle(R.string.delete)
@@ -55,16 +55,16 @@ class ItemsAdapter(private val context: Context, private val listItems: MutableL
     }
 
     private fun deleteItem(position: Int) {
-        val item = listItems[position]
+        val item = items[position]
         context.contentResolver.delete(
             ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, item._id!!),
             null,
             null
         )
         File(item.picturePath).delete()
-        listItems.removeAt(position)
+        items.removeAt(position)
         notifyDataSetChanged() // observable kick
     }
 
-    override fun getItemCount() = listItems.size
+    override fun getItemCount() = items.size
 }

@@ -25,7 +25,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:text="@string/date"
+                android:text="@string/rank"
                 android:textColor="@android:color/holo_red_dark"
                 android:textStyle="bold" />
 
@@ -38,20 +38,20 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tvRank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="yyyy-MM-dd" />
+            tools:text="1" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title"
+            android:text="@string/name"
             android:textColor="@android:color/holo_red_dark"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@tools:sample/lorem" />
@@ -59,12 +59,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/explanation"
+            android:text="@string/description"
             android:textColor="@android:color/holo_red_dark"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvExplanation"
+            android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@tools:sample/lorem/random" />

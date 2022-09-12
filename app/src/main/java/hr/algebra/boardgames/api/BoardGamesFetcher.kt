@@ -10,7 +10,7 @@ import hr.algebra.boardgames.framework.setBooleanProperty
 import hr.algebra.boardgames.framework.showConnectionErrorMessage
 import hr.algebra.boardgames.framework.showStatusCodeErrorMessage
 import hr.algebra.boardgames.handler.downloadImageAndStore
-import hr.algebra.boardgames.model.ListItem
+import hr.algebra.boardgames.model.Item
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.Interceptor
@@ -70,10 +70,10 @@ class BoardGamesFetcher(private val context: Context) {
     fun fetchItems() {
         val request = boardGamesApi.fetchItems()
 
-        request.enqueue(object : Callback<BoardGamesResponse> {
+        request.enqueue(object : Callback<BoardGamesSearchResponse> {
             override fun onResponse(
-                call: Call<BoardGamesResponse>,
-                response: Response<BoardGamesResponse>
+                call: Call<BoardGamesSearchResponse>,
+                response: Response<BoardGamesSearchResponse>
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let {
@@ -85,29 +85,29 @@ class BoardGamesFetcher(private val context: Context) {
 
             }
 
-            override fun onFailure(call: Call<BoardGamesResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BoardGamesSearchResponse>, t: Throwable) {
                 context.showConnectionErrorMessage(t)
             }
 
         })
     }
 
-    private fun populateItems(boardGamesListItems: List<BoardGamesListItem>) {
+    private fun populateItems(boardGamesItems: List<BoardGamesItem>) {
 
         GlobalScope.launch {
 
-            boardGamesListItems.forEach {
+            boardGamesItems.forEach {
                 val picturePath = downloadImageAndStore(
                     context,
                     it.imageUrl,
                     it.name.replace(" ", "_")
                 )
                 val values = ContentValues().apply {
-                    put(ListItem::name.name, it.name)
-                    put(ListItem::rank.name, it.rank)
-                    put(ListItem::description.name, it.description)
-                    put(ListItem::picturePath.name, picturePath ?: "")
-                    put(ListItem::read.name, false)
+                    put(Item::name.name, it.name)
+                    put(Item::rank.name, it.rank)
+                    put(Item::description.name, it.description)
+                    put(Item::picturePath.name, picturePath ?: "")
+                    put(Item::read.name, false)
                 }
                 context.contentResolver.insert(BOARD_GAMES_PROVIDER_URI, values)
 
