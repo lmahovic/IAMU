@@ -6,9 +6,14 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import com.google.gson.Gson
 import hr.algebra.boardgames.R
+import hr.algebra.boardgames.framework.getStringProperty
+import hr.algebra.boardgames.framework.setStringProperty
+import hr.algebra.boardgames.model.FILTER_ARGS_PREFERENCES_KEY
 import hr.algebra.boardgames.model.FilterArgs
 import hr.algebra.boardgames.model.OrderParam
 import hr.algebra.boardgames.viewmodels.FilterArgsViewModel
@@ -36,6 +41,15 @@ class SearchFilterDialogFragment : DialogFragment() {
                 OrderParam.values()
             )
 
+            restoreFilterState(
+                spSort,
+                etNamePrefix,
+                etMinPlayers,
+                etMaxPlayers,
+                etMinPlaytime,
+                etMaxPlaytime
+            )
+
             builder.setView(view)
                 .setPositiveButton(
                     R.string.apply
@@ -48,6 +62,8 @@ class SearchFilterDialogFragment : DialogFragment() {
                         etMinPlaytime.text.toString().toIntOrNull(),
                         etMaxPlaytime.text.toString().toIntOrNull(),
                     )
+                    val filterArgsSer = Gson().toJson(filterArgs)
+                    requireContext().setStringProperty(FILTER_ARGS_PREFERENCES_KEY, filterArgsSer)
                     viewModel.updateFilterArgs(filterArgs)
                 }
                 .setNegativeButton(
@@ -58,5 +74,44 @@ class SearchFilterDialogFragment : DialogFragment() {
             // Create the AlertDialog object and return it
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
+    }
+
+    private fun restoreFilterState(
+        spSort: Spinner,
+        etNamePrefix: EditText,
+        etMinPlayers: EditText,
+        etMaxPlayers: EditText,
+        etMinPlaytime: EditText,
+        etMaxPlaytime: EditText
+    ) {
+        val filterArgsString = requireContext().getStringProperty(FILTER_ARGS_PREFERENCES_KEY)
+        val loadedFilterArgs = Gson().fromJson(filterArgsString, FilterArgs::class.java)
+
+        spSort.setSelection(loadedFilterArgs.orderParam.ordinal)
+        etNamePrefix.setText(loadedFilterArgs.namePrefix, TextView.BufferType.EDITABLE)
+        loadedFilterArgs.minPlayers?.let {
+            etMinPlayers.setText(
+                it.toString(),
+                TextView.BufferType.EDITABLE
+            )
+        }
+        loadedFilterArgs.maxPlayers?.let {
+            etMaxPlayers.setText(
+                it.toString(),
+                TextView.BufferType.EDITABLE
+            )
+        }
+        loadedFilterArgs.minPlaytime?.let {
+            etMinPlaytime.setText(
+                it.toString(),
+                TextView.BufferType.EDITABLE
+            )
+        }
+        loadedFilterArgs.maxPlaytime?.let {
+            etMaxPlaytime.setText(
+                it.toString(),
+                TextView.BufferType.EDITABLE
+            )
+        }
     }
 }

@@ -71,7 +71,7 @@ class SearchFragment : Fragment() {
         }
         viewModel.filterArgs.observe(viewLifecycleOwner) {
             showProgressDialog()
-            BoardGamesFetcher(requireContext()).fetchItems(it, this)
+            BoardGamesFetcher(requireContext()).fetchItems(this)
         }
     }
 

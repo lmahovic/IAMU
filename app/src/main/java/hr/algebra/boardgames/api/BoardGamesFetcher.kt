@@ -10,9 +10,9 @@ import hr.algebra.boardgames.contentproviders.BOARD_GAMES_PROVIDER_URI
 import hr.algebra.boardgames.fragments.SearchFragment
 import hr.algebra.boardgames.framework.*
 import hr.algebra.boardgames.handler.downloadImageAndStore
+import hr.algebra.boardgames.model.FILTER_ARGS_PREFERENCES_KEY
 import hr.algebra.boardgames.model.FilterArgs
 import hr.algebra.boardgames.model.Item
-import hr.algebra.boardgames.model.OrderParam
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.Interceptor
@@ -74,7 +74,18 @@ class BoardGamesFetcher(private val context: Context) {
             .build()
     }
 
-    fun fetchItems(filterArgs: FilterArgs, searchFragment: SearchFragment? = null) {
+    fun fetchItems(searchFragment: SearchFragment? = null) {
+
+        val filterArgs: FilterArgs
+        val filterArgsString = context.getStringProperty(FILTER_ARGS_PREFERENCES_KEY)
+
+        if (filterArgsString.isNullOrEmpty()) {
+            filterArgs = FilterArgs()
+            val filterArgsSer = Gson().toJson(filterArgs)
+            context.setStringProperty(FILTER_ARGS_PREFERENCES_KEY, filterArgsSer)
+        } else {
+            filterArgs = Gson().fromJson(filterArgsString, FilterArgs::class.java)
+        }
 
         val request = boardGamesApi.fetchItems(createQueryMap(filterArgs))
 
@@ -128,10 +139,10 @@ class BoardGamesFetcher(private val context: Context) {
         if (filterArgs.namePrefix.isNotBlank()) {
             queryMap[NAME_API_PARAMETER] = filterArgs.namePrefix
         }
-        filterArgs.minPlayers?.let { queryMap[MIN_PLAYERS_API_PARAMETER] = (it-1).toString() }
-        filterArgs.maxPlayers?.let { queryMap[MAX_PLAYERS_API_PARAMETER] = (it-1).toString() }
-        filterArgs.minPlaytime?.let { queryMap[MIN_PLAYTIME_API_PARAMETER] = (it-1).toString() }
-        filterArgs.maxPlaytime?.let { queryMap[MAX_PLAYTIME_API_PARAMETER] = (it+1).toString() }
+        filterArgs.minPlayers?.let { queryMap[MIN_PLAYERS_API_PARAMETER] = (it - 1).toString() }
+        filterArgs.maxPlayers?.let { queryMap[MAX_PLAYERS_API_PARAMETER] = (it - 1).toString() }
+        filterArgs.minPlaytime?.let { queryMap[MIN_PLAYTIME_API_PARAMETER] = (it - 1).toString() }
+        filterArgs.maxPlaytime?.let { queryMap[MAX_PLAYTIME_API_PARAMETER] = (it + 1).toString() }
         return queryMap
     }
 

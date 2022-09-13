@@ -11,6 +11,7 @@ import hr.algebra.boardgames.framework.startAnimation
 import hr.algebra.boardgames.services.BoardGamesService
 
 private const val DELAY = 3000L
+private const val SMALLER_DELAY = 1500L
 const val DATA_IMPORTED = "hr.algebra.boardgames.data_imported"
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -37,11 +38,13 @@ class SplashScreenActivity : AppCompatActivity() {
 //            callDelayed(DELAY) { startActivity<HostActivity>() }
 //        } else {
         if (isOnline()) {
-            Intent(this, BoardGamesService::class.java).apply {
-                BoardGamesService.enqueue(
-                    this@SplashScreenActivity,
-                    this
-                )
+            callDelayed(SMALLER_DELAY) {
+                Intent(this, BoardGamesService::class.java).apply {
+                    BoardGamesService.enqueue(
+                        this@SplashScreenActivity,
+                        this
+                    )
+                }
             }
         } else {
             binding.tvSplash.text = getString(R.string.no_internet)
