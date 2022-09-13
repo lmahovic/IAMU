@@ -7,10 +7,12 @@ import hr.algebra.boardgames.activities.API_RESPONSE_STRING_KEY
 import hr.algebra.boardgames.activities.DATA_IMPORTED
 import hr.algebra.boardgames.broadcastreceivers.BoardGamesReceiver
 import hr.algebra.boardgames.contentproviders.BOARD_GAMES_PROVIDER_URI
+import hr.algebra.boardgames.fragments.SearchFragment
 import hr.algebra.boardgames.framework.*
 import hr.algebra.boardgames.handler.downloadImageAndStore
 import hr.algebra.boardgames.model.FilterArgs
 import hr.algebra.boardgames.model.Item
+import hr.algebra.boardgames.model.OrderParam
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.Interceptor
@@ -25,10 +27,10 @@ import java.util.concurrent.TimeUnit
 
 private const val ORDER_BY_API_PARAMETER = "order_by"
 private const val NAME_API_PARAMETER = "name"
-private const val MIN_PLAYERS_API_PARAMETER = "min_players"
-private const val MAX_PLAYERS_API_PARAMETER = "max_players"
-private const val MIN_PLAYTIME_API_PARAMETER = "min_playtime"
-private const val MAX_PLAYTIME_API_PARAMETER = "max_playtime"
+private const val MIN_PLAYERS_API_PARAMETER = "gt_min_players"
+private const val MAX_PLAYERS_API_PARAMETER = "gt_max_players"
+private const val MIN_PLAYTIME_API_PARAMETER = "gt_min_playtime"
+private const val MAX_PLAYTIME_API_PARAMETER = "lt_max_playtime"
 
 class BoardGamesFetcher(private val context: Context) {
 
@@ -72,7 +74,7 @@ class BoardGamesFetcher(private val context: Context) {
             .build()
     }
 
-    fun fetchItems(filterArgs: FilterArgs) {
+    fun fetchItems(filterArgs: FilterArgs, searchFragment: SearchFragment? = null) {
 
         val request = boardGamesApi.fetchItems(createQueryMap(filterArgs))
 
@@ -101,7 +103,11 @@ class BoardGamesFetcher(private val context: Context) {
                             )
                         }
 
-                        context.sendBroadcast<BoardGamesReceiver>()
+                        if (searchFragment == null) {
+                            context.sendBroadcast<BoardGamesReceiver>()
+                        } else {
+                            searchFragment.updateRecyclerViewFromApi()
+                        }
                     }
                 } else {
                     context.showStatusCodeErrorMessage(response)
@@ -122,10 +128,10 @@ class BoardGamesFetcher(private val context: Context) {
         if (filterArgs.namePrefix.isNotBlank()) {
             queryMap[NAME_API_PARAMETER] = filterArgs.namePrefix
         }
-        filterArgs.minPlayers?.let { queryMap[MIN_PLAYERS_API_PARAMETER] = it.toString() }
-        filterArgs.maxPlayers?.let { queryMap[MAX_PLAYERS_API_PARAMETER] = it.toString() }
-        filterArgs.minPlaytime?.let { queryMap[MIN_PLAYTIME_API_PARAMETER] = it.toString() }
-        filterArgs.maxPlaytime?.let { queryMap[MAX_PLAYTIME_API_PARAMETER] = it.toString() }
+        filterArgs.minPlayers?.let { queryMap[MIN_PLAYERS_API_PARAMETER] = (it-1).toString() }
+        filterArgs.maxPlayers?.let { queryMap[MAX_PLAYERS_API_PARAMETER] = (it-1).toString() }
+        filterArgs.minPlaytime?.let { queryMap[MIN_PLAYTIME_API_PARAMETER] = (it-1).toString() }
+        filterArgs.maxPlaytime?.let { queryMap[MAX_PLAYTIME_API_PARAMETER] = (it+1).toString() }
         return queryMap
     }
 

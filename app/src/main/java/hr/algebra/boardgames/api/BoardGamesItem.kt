@@ -3,6 +3,8 @@ package hr.algebra.boardgames.api
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+const val BAD_RANK = 9999999
+
 data class BoardGamesItem(
 
     @SerializedName("id") var id: String,

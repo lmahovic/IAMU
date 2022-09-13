@@ -8,10 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import hr.algebra.boardgames.activities.API_RESPONSE_STRING_KEY
-import hr.algebra.boardgames.adapters.ItemsAdapter
+import hr.algebra.boardgames.adapters.SearchFragmentRecyclerViewAdapter
 import hr.algebra.boardgames.api.BoardGamesSearchResponse
 import hr.algebra.boardgames.databinding.FragmentFavoritesBinding
-import hr.algebra.boardgames.framework.fetchItems
 import hr.algebra.boardgames.framework.getStringProperty
 import hr.algebra.boardgames.model.Item
 
@@ -49,7 +48,7 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvItems.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = ItemsAdapter(
+            adapter = SearchFragmentRecyclerViewAdapter(
                 requireContext(),
                 items.filter { it.isFavourite }.toMutableList()
             )

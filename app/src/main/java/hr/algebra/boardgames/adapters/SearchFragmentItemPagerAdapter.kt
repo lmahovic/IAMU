@@ -1,6 +1,7 @@
 package hr.algebra.boardgames.adapters
 
 import android.content.Context
+import android.net.Uri
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +12,15 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import hr.algebra.boardgames.R
+import hr.algebra.boardgames.api.BAD_RANK
 import hr.algebra.boardgames.model.Item
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
-import java.io.File
 
-class ItemPagerAdapter(private val context: Context, private val items: MutableList<Item>) :
-    RecyclerView.Adapter<ItemPagerAdapter.ViewHolder>() {
+class SearchFragmentItemPagerAdapter(
+    private val context: Context,
+    private val items: MutableList<Item>
+) :
+    RecyclerView.Adapter<SearchFragmentItemPagerAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivItem = itemView.findViewById<ImageView>(R.id.ivItemImage)
         private val ivFavorite = itemView.findViewById<ImageView>(R.id.ivFavorite)
@@ -27,7 +31,11 @@ class ItemPagerAdapter(private val context: Context, private val items: MutableL
         private val tvDescription = itemView.findViewById<TextView>(R.id.tvDescription)
         fun bind(item: Item) {
             tvTitle.text = item.name
-            tvRank.text = item.rank.toString()
+            tvRank.text = if (item.rank != BAD_RANK) {
+                item.rank.toString()
+            } else {
+                "n/a"
+            }
             tvPlayerCount.text = item.playerCount
             tvPlayTime.text = item.playtimeRange
 
@@ -43,10 +51,9 @@ class ItemPagerAdapter(private val context: Context, private val items: MutableL
                     R.drawable.ic_favorite_border
                 }
             )
-            tvRank.text = item.rank.toString()
 //            ivRead.setImageResource(if (item.read) R.drawable.green_flag else R.drawable.red_flag)
             Picasso.get()
-                .load(File(item.picturePath))
+                .load(Uri.parse(item.picturePath))
                 .transform(RoundedCornersTransformation(50, 5))
                 .error(R.drawable.board_games_about)
                 .into(ivItem)

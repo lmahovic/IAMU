@@ -16,14 +16,18 @@ import com.squareup.picasso.Picasso
 import hr.algebra.boardgames.R
 import hr.algebra.boardgames.activities.ITEM_POSITION
 import hr.algebra.boardgames.activities.ItemPagerActivity
+import hr.algebra.boardgames.api.BAD_RANK
 import hr.algebra.boardgames.contentproviders.BOARD_GAMES_PROVIDER_URI
 import hr.algebra.boardgames.framework.startActivity
 import hr.algebra.boardgames.model.Item
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import java.io.File
 
-class ItemsAdapter(private val context: Context, private val items: MutableList<Item>) :
-    RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
+class SearchFragmentRecyclerViewAdapter(
+    private val context: Context,
+    private var items: MutableList<Item>
+) :
+    RecyclerView.Adapter<SearchFragmentRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(LayoutInflater.from(context).inflate(R.layout.item, parent, false))
@@ -74,7 +78,11 @@ class ItemsAdapter(private val context: Context, private val items: MutableList<
         private val ivFavorite = itemView.findViewById<ImageView>(R.id.ivFavorite)
         fun bind(item: Item) {
             tvItemName.text = item.name
-            tvRank.text = item.rank.toString()
+            tvRank.text = if (item.rank != BAD_RANK) {
+                item.rank.toString()
+            } else {
+                "n/a"
+            }
             tvPlayerCount.text = item.playerCount
             tvPlayTime.text = item.playtimeRange
             ivFavorite.setImageResource(
@@ -107,4 +115,9 @@ class ItemsAdapter(private val context: Context, private val items: MutableList<
     }
 
     override fun getItemCount() = items.size
+
+    fun updateItemList(newItems: MutableList<Item>) {
+        items = newItems
+        notifyDataSetChanged()
+    }
 }

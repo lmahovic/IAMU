@@ -3,12 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.FavoritesFragment"
-    android:background="@color/design_default_color_primary_dark">
+    android:background="@color/design_default_color_primary_dark"
+    tools:context=".fragments.FavoritesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvItems"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/no_data_available"
+        android:textColor="@color/white"
+        android:visibility="gone" />
 
 </FrameLayout>
