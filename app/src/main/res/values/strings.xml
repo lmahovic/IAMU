@@ -3,6 +3,7 @@
     <string name="loading">Loading…</string>
     <string name="no_internet">No internet</string>
     <string name="favorite_games">Favorite games</string>
+    <string name="games_search">Games search</string>
     <string name="about">About</string>
     <string name="exit">Exit</string>
     <string name="really">Really exit app?</string>

@@ -2,9 +2,9 @@ package hr.algebra.boardgames.api
 
 import android.content.ContentValues
 import android.content.Context
-import hr.algebra.boardgames.BOARD_GAMES_PROVIDER_URI
-import hr.algebra.boardgames.BoardGamesReceiver
-import hr.algebra.boardgames.DATA_IMPORTED
+import hr.algebra.boardgames.broadcastreceivers.BoardGamesReceiver
+import hr.algebra.boardgames.activities.DATA_IMPORTED
+import hr.algebra.boardgames.contentproviders.BOARD_GAMES_PROVIDER_URI
 import hr.algebra.boardgames.framework.sendBroadcast
 import hr.algebra.boardgames.framework.setBooleanProperty
 import hr.algebra.boardgames.framework.showConnectionErrorMessage
@@ -110,7 +110,7 @@ class BoardGamesFetcher(private val context: Context) {
                     put(Item::playerCount.name, it.playerCount ?: "n/a")
                     put(Item::playtimeRange.name, it.playtimeRange ?: "n/a")
                     put(Item::rank.name, it.rank)
-                    put(Item::read.name, false)
+                    put(Item::isFavourite.name, false)
                 }
                 context.contentResolver.insert(BOARD_GAMES_PROVIDER_URI, values)
 

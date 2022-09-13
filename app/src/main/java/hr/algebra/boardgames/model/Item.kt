@@ -9,6 +9,6 @@ data class Item(
     val playerCount: String,
     val playtimeRange: String,
     val rank: Int,
-    var read: Boolean,
+//    var read: Boolean,
     var isFavourite: Boolean
 )

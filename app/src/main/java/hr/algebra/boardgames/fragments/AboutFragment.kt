@@ -1,10 +1,11 @@
-package hr.algebra.boardgames
+package hr.algebra.boardgames.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import hr.algebra.boardgames.R
 
 class AboutFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package hr.algebra.boardgames
+package hr.algebra.boardgames.services
 
 import android.content.Context
 import android.content.Intent
@@ -7,7 +7,7 @@ import hr.algebra.boardgames.api.BoardGamesFetcher
 
 private const val JOB_ID = 1
 
-class NasaService : JobIntentService() {
+class BoardGamesService : JobIntentService() {
 
     override fun onHandleWork(intent: Intent) {
 
@@ -17,7 +17,7 @@ class NasaService : JobIntentService() {
 
     companion object {
         fun enqueue(context: Context, intent: Intent) =
-            enqueueWork(context, NasaService::class.java, JOB_ID, intent)
+            enqueueWork(context, BoardGamesService::class.java, JOB_ID, intent)
     }
 
 

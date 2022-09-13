@@ -1,10 +1,12 @@
-package hr.algebra.boardgames
+package hr.algebra.boardgames.activities
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import hr.algebra.boardgames.R
 import hr.algebra.boardgames.databinding.ActivitySplashScreenBinding
 import hr.algebra.boardgames.framework.*
+import hr.algebra.boardgames.services.BoardGamesService
 
 private const val DELAY = 3000L
 const val DATA_IMPORTED = "hr.algebra.boardgames.data_imported"
@@ -33,8 +35,8 @@ class SplashScreenActivity : AppCompatActivity() {
             callDelayed(DELAY) { startActivity<HostActivity>() }
         } else {
             if (isOnline()) {
-                Intent(this, NasaService::class.java).apply {
-                    NasaService.enqueue(
+                Intent(this, BoardGamesService::class.java).apply {
+                    BoardGamesService.enqueue(
                         this@SplashScreenActivity,
                         this
                     )

@@ -13,32 +13,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BoardGames">
         <activity
-            android:name="hr.algebra.boardgames.ItemPagerActivity"
+            android:name="hr.algebra.boardgames.activities.ItemPagerActivity"
             android:label="Details"
             android:exported="false" />
 
         <provider
-            android:name="hr.algebra.boardgames.NasaProvider"
+            android:name="hr.algebra.boardgames.contentproviders.BoardGamesProvider"
             android:authorities="hr.algebra.boardgames.api.provider"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name="hr.algebra.boardgames.BoardGamesReceiver"
+            android:name="hr.algebra.boardgames.broadcastreceivers.BoardGamesReceiver"
             android:enabled="true"
             android:exported="false" />
 
         <service
-            android:name="hr.algebra.boardgames.NasaService"
+            android:name="hr.algebra.boardgames.services.BoardGamesService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
-            android:name="hr.algebra.boardgames.HostActivity"
+            android:name="hr.algebra.boardgames.activities.HostActivity"
             android:exported="true" />
         <activity
-            android:name="hr.algebra.boardgames.SplashScreenActivity"
+            android:name="hr.algebra.boardgames.activities.SplashScreenActivity"
             android:exported="true"
             android:noHistory="true"
             android:screenOrientation="portrait"

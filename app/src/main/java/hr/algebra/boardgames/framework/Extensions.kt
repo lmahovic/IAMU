@@ -13,7 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.getSystemService
 import androidx.preference.PreferenceManager
-import hr.algebra.boardgames.BOARD_GAMES_PROVIDER_URI
+import hr.algebra.boardgames.contentproviders.BOARD_GAMES_PROVIDER_URI
 import hr.algebra.boardgames.model.Item
 import retrofit2.Response
 import java.io.IOException
@@ -85,8 +85,7 @@ fun Context.fetchItems(): MutableList<Item> {
                 cursor.getString(cursor.getColumnIndexOrThrow(Item::playerCount.name)),
                 cursor.getString(cursor.getColumnIndexOrThrow(Item::playtimeRange.name)),
                 cursor.getInt(cursor.getColumnIndexOrThrow(Item::rank.name)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(Item::read.name)) == 1,
-                true
+                cursor.getInt(cursor.getColumnIndexOrThrow(Item::isFavourite.name)) == 1,
             )
         )
     }

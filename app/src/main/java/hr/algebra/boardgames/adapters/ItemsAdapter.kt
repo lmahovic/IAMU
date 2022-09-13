@@ -1,7 +1,8 @@
-package hr.algebra.boardgames
+package hr.algebra.boardgames.adapters
 
 import android.app.AlertDialog
 import android.content.ContentUris
+import android.content.ContentValues
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import hr.algebra.boardgames.R
+import hr.algebra.boardgames.activities.ITEM_POSITION
+import hr.algebra.boardgames.activities.ItemPagerActivity
+import hr.algebra.boardgames.contentproviders.BOARD_GAMES_PROVIDER_URI
 import hr.algebra.boardgames.framework.startActivity
 import hr.algebra.boardgames.model.Item
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
@@ -38,6 +43,11 @@ class ItemsAdapter(private val context: Context, private val items: MutableList<
         }
         holder.itemView.findViewById<ImageView>(R.id.ivFavorite).setOnClickListener {
             item.isFavourite = !item.isFavourite
+            val uri = ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, item._id!!)
+            val values = ContentValues().apply {
+                put(Item::isFavourite.name, item.isFavourite)
+            }
+            context.contentResolver.update(uri, values, null, null)
             val message = if (item.isFavourite) {
                 "Game added to favorite games!"
             } else {

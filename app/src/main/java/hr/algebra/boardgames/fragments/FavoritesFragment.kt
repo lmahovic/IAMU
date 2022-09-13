@@ -1,4 +1,4 @@
-package hr.algebra.boardgames
+package hr.algebra.boardgames.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import hr.algebra.boardgames.adapters.ItemsAdapter
 import hr.algebra.boardgames.databinding.FragmentFavoritesBinding
 import hr.algebra.boardgames.framework.fetchItems
 import hr.algebra.boardgames.model.Item
@@ -29,7 +30,10 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvItems.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = ItemsAdapter(requireContext(), items)
+            adapter = ItemsAdapter(
+                requireContext(),
+                items.filter { it.isFavourite }.toMutableList()
+            )
         }
     }
 }

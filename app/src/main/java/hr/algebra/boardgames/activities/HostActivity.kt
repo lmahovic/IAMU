@@ -1,4 +1,4 @@
-package hr.algebra.boardgames
+package hr.algebra.boardgames.activities
 
 import android.os.Bundle
 import android.view.Menu
@@ -12,6 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import hr.algebra.boardgames.R
 import hr.algebra.boardgames.databinding.ActivityHostBinding
 
 class HostActivity : AppCompatActivity() {
@@ -35,7 +36,10 @@ class HostActivity : AppCompatActivity() {
         val navController = navHostFrag.navController
 //        --define top level fragments (the ones where the hamburger menu is shown
         appBarConfiguration =
-            AppBarConfiguration(setOf(R.id.menuFavourite), binding.drawerLayout)
+            AppBarConfiguration(
+                setOf(R.id.menuSearch, R.id.menuFavourite, R.id.menuAbout),
+                binding.drawerLayout
+            )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.navigationView.setupWithNavController(navController)

@@ -21,7 +21,7 @@ private val CREATE = "create table $TABLE(" +
         "${Item::playerCount.name} text not null, " +
         "${Item::playtimeRange.name} text not null, " +
         "${Item::rank.name} integer not null, " +
-        "${Item::read.name} integer not null" +
+        "${Item::isFavourite.name} integer not null" +
         ")"
 
 private const val DROP = "drop table $TABLE"

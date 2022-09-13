@@ -1,4 +1,4 @@
-package hr.algebra.boardgames
+package hr.algebra.boardgames.adapters
 
 import android.content.Context
 import android.text.Html
@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import hr.algebra.boardgames.R
 import hr.algebra.boardgames.model.Item
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import java.io.File

@@ -1,4 +1,4 @@
-package hr.algebra.boardgames
+package hr.algebra.boardgames.contentproviders
 
 import android.content.ContentProvider
 import android.content.ContentUris
@@ -24,7 +24,7 @@ private val URI_MATCHER = with(UriMatcher(UriMatcher.NO_MATCH)) {
 
 val BOARD_GAMES_PROVIDER_URI: Uri = Uri.parse("content://$AUTHORITY/$PATH")
 
-class NasaProvider : ContentProvider() {
+class BoardGamesProvider : ContentProvider() {
 
     private lateinit var repository: BoardGamesRepository
 

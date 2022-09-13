@@ -3,17 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragments"
-    app:startDestination="@id/menuFavourite">
+    app:startDestination="@id/menuSearch">
+
+    <fragment
+        android:id="@+id/menuSearch"
+        android:name="hr.algebra.boardgames.fragments.SearchFragment"
+        android:label="@string/games_search"
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/menuFavourite"
-        android:name="hr.algebra.boardgames.FavoritesFragment"
+        android:name="hr.algebra.boardgames.fragments.FavoritesFragment"
         android:label="@string/favorite_games"
         tools:layout="@layout/fragment_favorites" />
 
     <fragment
         android:id="@+id/menuAbout"
-        android:name="hr.algebra.boardgames.AboutFragment"
+        android:name="hr.algebra.boardgames.fragments.AboutFragment"
         android:label="@string/about"
         tools:layout="@layout/fragment_about" />
 
