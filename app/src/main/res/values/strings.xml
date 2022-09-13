@@ -21,4 +21,13 @@
     <string name="playTime">Play Time</string>
 
     <string name="please_wait">Please Wait&#8230;</string>
+    <string name="search">Search</string>
+    <string name="apply">apply</string>
+    <string name="searchFilter">Search filter</string>
+    <string name="sort_by">Sort by</string>
+    <string name="min_players">Min players</string>
+    <string name="max_players">Max players</string>
+    <string name="min_playtime">Min playtime</string>
+    <string name="max_playtime">Max playtime</string>
+    <string name="name_prefix">Name prefix</string>
 </resources>

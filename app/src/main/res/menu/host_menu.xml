@@ -6,5 +6,6 @@
         android:id="@+id/menuExit"
         android:title="@string/exit"
         android:icon="@drawable/exit"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:orderInCategory="100"/>
 </menu>

@@ -3,6 +3,7 @@ package hr.algebra.boardgames.activities
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -14,10 +15,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import hr.algebra.boardgames.R
 import hr.algebra.boardgames.databinding.ActivityHostBinding
+import hr.algebra.boardgames.dialogs.SearchFilterDialogFragment
+import hr.algebra.boardgames.model.FilterArgs
 
 const val API_RESPONSE_STRING_KEY = "hr.algebra.boardgames.apiResponseStringKey"
 
-class HostActivity : AppCompatActivity() {
+class HostActivity : AppCompatActivity(), SearchFilterDialogFragment.SearchDialogListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHostBinding
@@ -89,5 +92,10 @@ class HostActivity : AppCompatActivity() {
             setPositiveButton("Ok") { _, _ -> finish() }
             show()
         }
+    }
+
+    override fun onPositiveDialogClick(filterArgs: FilterArgs) {
+
+        Toast.makeText(this, "search clicked", Toast.LENGTH_LONG).show()
     }
 }
