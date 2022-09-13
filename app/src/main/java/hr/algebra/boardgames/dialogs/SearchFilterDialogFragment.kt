@@ -2,37 +2,20 @@ package hr.algebra.boardgames.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import hr.algebra.boardgames.R
 import hr.algebra.boardgames.model.FilterArgs
 import hr.algebra.boardgames.model.OrderParam
+import hr.algebra.boardgames.viewmodels.FilterArgsViewModel
 
 class SearchFilterDialogFragment : DialogFragment() {
 
-    private lateinit var listener: SearchDialogListener
-
-    interface SearchDialogListener {
-        fun onPositiveDialogClick(filterArgs: FilterArgs)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
-            listener = context as SearchDialogListener
-        } catch (e: ClassCastException) {
-            // The activity doesn't implement the interface, throw exception
-            throw ClassCastException(
-                (context.toString() +
-                        " must implement NoticeDialogListener")
-            )
-        }
-    }
+    private val viewModel: FilterArgsViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -60,12 +43,12 @@ class SearchFilterDialogFragment : DialogFragment() {
                     val filterArgs = FilterArgs(
                         spSort.selectedItem as OrderParam,
                         etNamePrefix.text.toString(),
-                        etMinPlayers.text.toString().toInt(),
-                        etMaxPlayers.text.toString().toInt(),
-                        etMinPlaytime.text.toString().toInt(),
-                        etMaxPlaytime.text.toString().toInt(),
+                        etMinPlayers.text.toString().toIntOrNull(),
+                        etMaxPlayers.text.toString().toIntOrNull(),
+                        etMinPlaytime.text.toString().toIntOrNull(),
+                        etMaxPlaytime.text.toString().toIntOrNull(),
                     )
-                    listener.onPositiveDialogClick(filterArgs)
+                    viewModel.updateFilterArgs(filterArgs)
                 }
                 .setNegativeButton(
                     R.string.cancel

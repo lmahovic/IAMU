@@ -1,10 +1,10 @@
 package hr.algebra.boardgames.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import hr.algebra.boardgames.R
@@ -15,12 +15,16 @@ import hr.algebra.boardgames.databinding.FragmentSearchBinding
 import hr.algebra.boardgames.dialogs.SearchFilterDialogFragment
 import hr.algebra.boardgames.framework.getStringProperty
 import hr.algebra.boardgames.model.Item
+import hr.algebra.boardgames.viewmodels.FilterArgsViewModel
 
 
 class SearchFragment : Fragment() {
 
+    private lateinit var mProgressDialog: Dialog
     private lateinit var items: MutableList<Item>
     private lateinit var binding: FragmentSearchBinding
+
+    private val viewModel: FilterArgsViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +66,9 @@ class SearchFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = ItemsAdapter(requireContext(), items)
         }
+        viewModel.filterArgs.observe(viewLifecycleOwner) {
+            println(it)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -77,5 +84,23 @@ class SearchFragment : Fragment() {
     private fun showSearchDialog() {
         val dialog = SearchFilterDialogFragment()
         dialog.show(childFragmentManager, "Search filter")
+    }
+
+    private fun showProgressDialog() {
+        mProgressDialog = Dialog(requireContext())
+
+        /*Set the screen content from a layout resource.
+        The resource will be inflated, adding all top-level views to the screen.*/
+        mProgressDialog.setContentView(R.layout.dialog_custom_progress)
+
+        //Start the dialog and display it on screen.
+        mProgressDialog.show()
+    }
+
+    /**
+     * This function is used to dismiss the progress dialog if it is visible to user.
+     */
+    private fun hideProgressDialog() {
+        mProgressDialog.dismiss()
     }
 }

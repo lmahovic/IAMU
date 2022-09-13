@@ -1,6 +1,6 @@
 package hr.algebra.boardgames.model
 
-enum class OrderParam(val apiValue: String, val displayName: String) {
+enum class OrderParam(val apiValue: String, private val displayName: String) {
     RANK("rank", "Rank"),
     MIN_PLAYTIME("min_playtime", "Min playtime"),
     MAX_PLAYTIME("max_playtime", "Max playtime"),

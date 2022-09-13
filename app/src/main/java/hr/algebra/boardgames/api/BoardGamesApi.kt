@@ -2,6 +2,7 @@ package hr.algebra.boardgames.api
 
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.QueryMap
 
 const val API_URL = "https://api.boardgameatlas.com/api/"
 
@@ -10,6 +11,6 @@ const val API_CLIENT_KEY_PARAMETER_NAME = "client_id"
 const val API_CLIENT_KEY_PARAMETER_VALUE = "FeykxfqCLi"
 
 interface BoardGamesApi {
-    @GET("search?limit=20&order_by=rank")
-    fun fetchItems(): Call<BoardGamesSearchResponse>
+    @GET("search?limit=20&fuzzy_match=true")
+    fun fetchItems(@QueryMap filters: Map<String, String>): Call<BoardGamesSearchResponse>
 }

@@ -9,6 +9,7 @@ import hr.algebra.boardgames.broadcastreceivers.BoardGamesReceiver
 import hr.algebra.boardgames.contentproviders.BOARD_GAMES_PROVIDER_URI
 import hr.algebra.boardgames.framework.*
 import hr.algebra.boardgames.handler.downloadImageAndStore
+import hr.algebra.boardgames.model.FilterArgs
 import hr.algebra.boardgames.model.Item
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -22,9 +23,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+private const val ORDER_BY_API_PARAMETER = "order_by"
+private const val NAME_API_PARAMETER = "name"
+private const val MIN_PLAYERS_API_PARAMETER = "min_players"
+private const val MAX_PLAYERS_API_PARAMETER = "max_players"
+private const val MIN_PLAYTIME_API_PARAMETER = "min_playtime"
+private const val MAX_PLAYTIME_API_PARAMETER = "max_playtime"
 
 class BoardGamesFetcher(private val context: Context) {
-
 
     private var boardGamesApi: BoardGamesApi
 
@@ -66,8 +72,9 @@ class BoardGamesFetcher(private val context: Context) {
             .build()
     }
 
-    fun fetchItems() {
-        val request = boardGamesApi.fetchItems()
+    fun fetchItems(filterArgs: FilterArgs) {
+
+        val request = boardGamesApi.fetchItems(createQueryMap(filterArgs))
 
         request.enqueue(object : Callback<BoardGamesSearchResponse> {
             override fun onResponse(
@@ -106,6 +113,20 @@ class BoardGamesFetcher(private val context: Context) {
                 context.showConnectionErrorMessage(t)
             }
         })
+    }
+
+    private fun createQueryMap(filterArgs: FilterArgs): HashMap<String, String> {
+        val queryMap = HashMap<String, String>()
+
+        queryMap[ORDER_BY_API_PARAMETER] = filterArgs.orderParam.apiValue
+        if (filterArgs.namePrefix.isNotBlank()) {
+            queryMap[NAME_API_PARAMETER] = filterArgs.namePrefix
+        }
+        filterArgs.minPlayers?.let { queryMap[MIN_PLAYERS_API_PARAMETER] = it.toString() }
+        filterArgs.maxPlayers?.let { queryMap[MAX_PLAYERS_API_PARAMETER] = it.toString() }
+        filterArgs.minPlaytime?.let { queryMap[MIN_PLAYTIME_API_PARAMETER] = it.toString() }
+        filterArgs.maxPlaytime?.let { queryMap[MAX_PLAYTIME_API_PARAMETER] = it.toString() }
+        return queryMap
     }
 
     private fun populateItems(boardGamesItems: List<BoardGamesItem>) {
