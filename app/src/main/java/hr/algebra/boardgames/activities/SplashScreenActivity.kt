@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import hr.algebra.boardgames.R
 import hr.algebra.boardgames.databinding.ActivitySplashScreenBinding
-import hr.algebra.boardgames.framework.*
+import hr.algebra.boardgames.framework.callDelayed
+import hr.algebra.boardgames.framework.isOnline
+import hr.algebra.boardgames.framework.startAnimation
 import hr.algebra.boardgames.services.BoardGamesService
 
 private const val DELAY = 3000L
@@ -31,24 +33,24 @@ class SplashScreenActivity : AppCompatActivity() {
     private fun redirect() {
 
         //if data is loaded
-        if (getBooleanProperty(DATA_IMPORTED)) {
-            callDelayed(DELAY) { startActivity<HostActivity>() }
-        } else {
-            if (isOnline()) {
-                Intent(this, BoardGamesService::class.java).apply {
-                    BoardGamesService.enqueue(
-                        this@SplashScreenActivity,
-                        this
-                    )
-                }
-            } else {
-                binding.tvSplash.text = getString(R.string.no_internet)
-                callDelayed(DELAY) { finish() }
-
+//        if (getBooleanProperty(DATA_IMPORTED)) {
+//            callDelayed(DELAY) { startActivity<HostActivity>() }
+//        } else {
+        if (isOnline()) {
+            Intent(this, BoardGamesService::class.java).apply {
+                BoardGamesService.enqueue(
+                    this@SplashScreenActivity,
+                    this
+                )
             }
-            // ako ima interneta, startaj service
-            // else ispisi poruku i swedish()
+        } else {
+            binding.tvSplash.text = getString(R.string.no_internet)
+            callDelayed(DELAY) { finish() }
+
         }
+        // ako ima interneta, startaj service
+        // else ispisi poruku i swedish()
+//        }
         // else start service
     }
 

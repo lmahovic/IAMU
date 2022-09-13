@@ -19,4 +19,6 @@
     <string name="playTimePlaceholder">90–120</string>
     <string name="playerCount">Player Count</string>
     <string name="playTime">Play Time</string>
+
+    <string name="please_wait">Please Wait&#8230;</string>
 </resources>

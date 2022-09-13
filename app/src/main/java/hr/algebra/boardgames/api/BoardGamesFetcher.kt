@@ -2,13 +2,12 @@ package hr.algebra.boardgames.api
 
 import android.content.ContentValues
 import android.content.Context
-import hr.algebra.boardgames.broadcastreceivers.BoardGamesReceiver
+import com.google.gson.Gson
+import hr.algebra.boardgames.activities.API_RESPONSE_STRING_KEY
 import hr.algebra.boardgames.activities.DATA_IMPORTED
+import hr.algebra.boardgames.broadcastreceivers.BoardGamesReceiver
 import hr.algebra.boardgames.contentproviders.BOARD_GAMES_PROVIDER_URI
-import hr.algebra.boardgames.framework.sendBroadcast
-import hr.algebra.boardgames.framework.setBooleanProperty
-import hr.algebra.boardgames.framework.showConnectionErrorMessage
-import hr.algebra.boardgames.framework.showStatusCodeErrorMessage
+import hr.algebra.boardgames.framework.*
 import hr.algebra.boardgames.handler.downloadImageAndStore
 import hr.algebra.boardgames.model.Item
 import kotlinx.coroutines.GlobalScope
@@ -77,7 +76,25 @@ class BoardGamesFetcher(private val context: Context) {
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        populateItems(it.games)
+//                        populateItems(it.games)
+                        val responseJson = Gson().toJson(response.body())
+                        context.setStringProperty(API_RESPONSE_STRING_KEY, responseJson)
+
+                        it.games.map { boardGamesItem ->
+                            Item(
+                                null,
+                                boardGamesItem.id,
+                                boardGamesItem.name,
+                                boardGamesItem.imageUrl,
+                                boardGamesItem.description,
+                                boardGamesItem.playerCount ?: "n/a",
+                                boardGamesItem.playtimeRange ?: "n/a",
+                                boardGamesItem.rank,
+                                false
+                            )
+                        }
+
+                        context.sendBroadcast<BoardGamesReceiver>()
                     }
                 } else {
                     context.showStatusCodeErrorMessage(response)
@@ -88,7 +105,6 @@ class BoardGamesFetcher(private val context: Context) {
             override fun onFailure(call: Call<BoardGamesSearchResponse>, t: Throwable) {
                 context.showConnectionErrorMessage(t)
             }
-
         })
     }
 

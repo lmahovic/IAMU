@@ -1,6 +1,7 @@
 package hr.algebra.boardgames.api
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class BoardGamesItem(
 
@@ -12,4 +13,4 @@ data class BoardGamesItem(
     @SerializedName("playtime") var playtimeRange: String?,
     @SerializedName("rank") var rank: Int
 
-)
+) : Serializable

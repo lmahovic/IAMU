@@ -15,6 +15,8 @@ import androidx.navigation.ui.setupWithNavController
 import hr.algebra.boardgames.R
 import hr.algebra.boardgames.databinding.ActivityHostBinding
 
+const val API_RESPONSE_STRING_KEY = "hr.algebra.boardgames.apiResponseStringKey"
+
 class HostActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration

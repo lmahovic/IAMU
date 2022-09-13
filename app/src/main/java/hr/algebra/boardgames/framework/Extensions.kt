@@ -53,6 +53,15 @@ fun Context.setBooleanProperty(key: String, value: Boolean) =
 fun Context.getBooleanProperty(key: String) = PreferenceManager.getDefaultSharedPreferences(this)
     .getBoolean(key, false)
 
+fun Context.setStringProperty(key: String, value: String) =
+    PreferenceManager.getDefaultSharedPreferences(this)
+        .edit()
+        .putString(key, value)
+        .apply()
+
+fun Context.getStringProperty(key: String) = PreferenceManager.getDefaultSharedPreferences(this)
+    .getString(key, "")
+
 fun Context.isOnline(): Boolean {
     val connectivityManager = getSystemService<ConnectivityManager>();
     connectivityManager?.activeNetwork?.let { network ->

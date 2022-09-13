@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -85,7 +86,7 @@ class ItemsAdapter(private val context: Context, private val items: MutableList<
             )
 
             Picasso.get()
-                .load(File(item.picturePath))
+                .load(Uri.parse(item.picturePath))
                 .error(R.drawable.board_games_about)
                 .transform(RoundedCornersTransformation(50, 5))
                 .into(ivItemImage)
