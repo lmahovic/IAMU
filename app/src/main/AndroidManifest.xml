@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hr.algebra.boardgames">
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <data android:scheme="mailto" />
+        </intent>
+    </queries>
+
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,8 +23,8 @@
         android:theme="@style/Theme.BoardGames">
         <activity
             android:name="hr.algebra.boardgames.activities.ItemPagerActivity"
-            android:label="Details"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Details" />
 
         <provider
             android:name="hr.algebra.boardgames.contentproviders.BoardGamesProvider"

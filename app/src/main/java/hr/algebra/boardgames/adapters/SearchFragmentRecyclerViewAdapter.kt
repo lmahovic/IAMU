@@ -80,6 +80,7 @@ class SearchFragmentRecyclerViewAdapter(
 
             Picasso.get()
                 .load(Uri.parse(item.apiPicturePath))
+                .placeholder(R.drawable.loading_icon)
                 .error(R.drawable.board_games_about)
                 .transform(RoundedCornersTransformation(50, 5))
                 .into(ivItemImage)

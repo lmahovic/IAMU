@@ -9,6 +9,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Handler
 import android.os.Looper
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.getSystemService
@@ -75,7 +76,7 @@ fun Context.getStringProperty(key: String) = PreferenceManager.getDefaultSharedP
     .getString(key, "")
 
 fun Context.isOnline(): Boolean {
-    val connectivityManager = getSystemService<ConnectivityManager>();
+    val connectivityManager = getSystemService<ConnectivityManager>()
     connectivityManager?.activeNetwork?.let { network ->
         connectivityManager.getNetworkCapabilities(network)?.let { networkCapabilities ->
             return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
@@ -157,3 +158,5 @@ fun Context.restoreItemsFromPreferences(): MutableList<Item> {
         )
     }.toMutableList()
 }
+
+fun CharSequence?.isValidPhoneNumber() = !isNullOrEmpty() && Patterns.PHONE.matcher(this).matches()

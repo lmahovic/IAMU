@@ -12,7 +12,6 @@ import hr.algebra.boardgames.services.BoardGamesService
 
 private const val DELAY = 3000L
 private const val SMALLER_DELAY = 1500L
-const val DATA_IMPORTED = "hr.algebra.boardgames.data_imported"
 
 class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding

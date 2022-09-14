@@ -3,6 +3,7 @@ package hr.algebra.boardgames.activities
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import hr.algebra.boardgames.R
 import hr.algebra.boardgames.databinding.ActivityHostBinding
+import hr.algebra.boardgames.dialogs.EmailFavoritesDialogFragment
 import hr.algebra.boardgames.framework.fetchItems
 import hr.algebra.boardgames.viewmodels.FavoriteItemsViewModel
 
@@ -79,6 +81,18 @@ class HostActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menuExit -> {
                 exitApp()
+                return true
+            }
+            R.id.menuEmail -> {
+                if (favoriteItemsViewModel.favoriteItems.value.isNullOrEmpty()) {
+                    Toast.makeText(
+                        this,
+                        "No items in favorite games, please add some!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    EmailFavoritesDialogFragment().show(supportFragmentManager, "Send email")
+                }
                 return true
             }
         }
