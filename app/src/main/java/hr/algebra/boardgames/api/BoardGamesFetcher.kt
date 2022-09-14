@@ -1,20 +1,14 @@
 package hr.algebra.boardgames.api
 
-import android.content.ContentValues
 import android.content.Context
 import com.google.gson.Gson
 import hr.algebra.boardgames.activities.API_RESPONSE_STRING_KEY
-import hr.algebra.boardgames.activities.DATA_IMPORTED
 import hr.algebra.boardgames.broadcastreceivers.BoardGamesReceiver
-import hr.algebra.boardgames.contentproviders.BOARD_GAMES_PROVIDER_URI
 import hr.algebra.boardgames.fragments.SearchFragment
 import hr.algebra.boardgames.framework.*
-import hr.algebra.boardgames.handler.downloadImageAndStore
 import hr.algebra.boardgames.model.FILTER_ARGS_PREFERENCES_KEY
 import hr.algebra.boardgames.model.FilterArgs
 import hr.algebra.boardgames.model.Item
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -106,11 +100,11 @@ class BoardGamesFetcher(private val context: Context) {
                                 boardGamesItem.id,
                                 boardGamesItem.name,
                                 boardGamesItem.imageUrl,
+                                null,
                                 boardGamesItem.description,
                                 boardGamesItem.playerCount ?: "n/a",
                                 boardGamesItem.playtimeRange ?: "n/a",
                                 boardGamesItem.rank,
-                                false
                             )
                         }
 
@@ -121,12 +115,14 @@ class BoardGamesFetcher(private val context: Context) {
                         }
                     }
                 } else {
+                    searchFragment?.hideProgressDialog()
                     context.showStatusCodeErrorMessage(response)
                 }
 
             }
 
             override fun onFailure(call: Call<BoardGamesSearchResponse>, t: Throwable) {
+                searchFragment?.hideProgressDialog()
                 context.showConnectionErrorMessage(t)
             }
         })
@@ -145,35 +141,4 @@ class BoardGamesFetcher(private val context: Context) {
         filterArgs.maxPlaytime?.let { queryMap[MAX_PLAYTIME_API_PARAMETER] = (it + 1).toString() }
         return queryMap
     }
-
-    private fun populateItems(boardGamesItems: List<BoardGamesItem>) {
-
-        GlobalScope.launch {
-
-            boardGamesItems.forEach {
-                val picturePath = downloadImageAndStore(
-                    context,
-                    it.imageUrl,
-                    it.name.replace(" ", "_")
-                )
-                val values = ContentValues().apply {
-                    put(Item::apiId.name, it.id)
-                    put(Item::name.name, it.name)
-                    put(Item::picturePath.name, picturePath ?: "")
-                    put(Item::description.name, it.description)
-                    put(Item::playerCount.name, it.playerCount ?: "n/a")
-                    put(Item::playtimeRange.name, it.playtimeRange ?: "n/a")
-                    put(Item::rank.name, it.rank)
-                    put(Item::isFavourite.name, false)
-                }
-                context.contentResolver.insert(BOARD_GAMES_PROVIDER_URI, values)
-
-
-            }
-
-            context.setBooleanProperty(DATA_IMPORTED, true)
-            context.sendBroadcast<BoardGamesReceiver>()
-        }
-    }
-
 }

@@ -8,22 +8,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.RequestCreator
 import hr.algebra.boardgames.R
 import hr.algebra.boardgames.api.BAD_RANK
 import hr.algebra.boardgames.model.Item
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
+import java.io.File
 
 class SearchFragmentItemPagerAdapter(
     private val context: Context,
-    private val items: MutableList<Item>
+    private val items: MutableList<Item>,
+    private val isFavorites: Boolean
 ) :
     RecyclerView.Adapter<SearchFragmentItemPagerAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivItem = itemView.findViewById<ImageView>(R.id.ivItemImage)
-        private val ivFavorite = itemView.findViewById<ImageView>(R.id.ivFavorite)
         private val tvTitle = itemView.findViewById<TextView>(R.id.tvName)
         private val tvRank = itemView.findViewById<TextView>(R.id.tvRank)
         private val tvPlayerCount = itemView.findViewById<TextView>(R.id.tvPlayerCount)
@@ -43,18 +46,14 @@ class SearchFragmentItemPagerAdapter(
                 item.description,
                 Html.FROM_HTML_MODE_COMPACT,
             )
-
-            ivFavorite.setImageResource(
-                if (item.isFavourite) {
-                    R.drawable.ic_favorite
-                } else {
-                    R.drawable.ic_favorite_border
-                }
-            )
 //            ivRead.setImageResource(if (item.read) R.drawable.green_flag else R.drawable.red_flag)
-            Picasso.get()
-                .load(Uri.parse(item.picturePath))
-                .transform(RoundedCornersTransformation(50, 5))
+            val picasso = Picasso.get()
+            val creator: RequestCreator = if (isFavorites) {
+                picasso.load(File(item.localPicturePath!!))
+            } else {
+                picasso.load(Uri.parse(item.apiPicturePath))
+            }
+            creator.transform(RoundedCornersTransformation(50, 5))
                 .error(R.drawable.board_games_about)
                 .into(ivItem)
         }
@@ -81,16 +80,6 @@ class SearchFragmentItemPagerAdapter(
 //            )
 //            notifyItemChanged(position)
 //        }
-        holder.itemView.findViewById<ImageView>(R.id.ivFavorite).setOnClickListener {
-            item.isFavourite = !item.isFavourite
-            val message = if (item.isFavourite) {
-                "Game added to favorite games!"
-            } else {
-                "Game removed from favorite games!"
-            }
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-            notifyItemChanged(position)
-        }
         holder.bind(item)
     }
 

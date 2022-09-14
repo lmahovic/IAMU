@@ -5,52 +5,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
-import hr.algebra.boardgames.activities.API_RESPONSE_STRING_KEY
-import hr.algebra.boardgames.adapters.SearchFragmentRecyclerViewAdapter
-import hr.algebra.boardgames.api.BoardGamesSearchResponse
+import androidx.recyclerview.widget.RecyclerView
+import hr.algebra.boardgames.adapters.FavoriteFragmentRecyclerViewAdapter
 import hr.algebra.boardgames.databinding.FragmentFavoritesBinding
-import hr.algebra.boardgames.framework.getStringProperty
+import hr.algebra.boardgames.framework.fetchItems
 import hr.algebra.boardgames.model.Item
+import hr.algebra.boardgames.viewmodels.FavoriteItemsViewModel
 
 
 class FavoritesFragment : Fragment() {
 
+    private lateinit var rvItems: RecyclerView
     private lateinit var items: MutableList<Item>
     private lateinit var binding: FragmentFavoritesBinding
+    private val favoriteItemsViewModel: FavoriteItemsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val itemsJsonString = requireContext().getStringProperty(API_RESPONSE_STRING_KEY)
-        val boardGames =
-            Gson().fromJson(itemsJsonString, BoardGamesSearchResponse::class.java).games
-        items = boardGames.map { boardGamesItem ->
-            Item(
-                null,
-                boardGamesItem.id,
-                boardGamesItem.name,
-                boardGamesItem.imageUrl,
-                boardGamesItem.description,
-                boardGamesItem.playerCount ?: "n/a",
-                boardGamesItem.playtimeRange ?: "n/a",
-                boardGamesItem.rank,
-                false
-            )
-        }.toMutableList()
+        items = requireContext().fetchItems()
         binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rvItems.apply {
+        rvItems = binding.rvItems.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = SearchFragmentRecyclerViewAdapter(
+            adapter = FavoriteFragmentRecyclerViewAdapter(
                 requireContext(),
-                items.filter { it.isFavourite }.toMutableList()
+                favoriteItemsViewModel
             )
         }
     }

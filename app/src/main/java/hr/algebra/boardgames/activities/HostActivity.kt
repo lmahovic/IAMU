@@ -3,6 +3,7 @@ package hr.algebra.boardgames.activities
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -14,6 +15,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import hr.algebra.boardgames.R
 import hr.algebra.boardgames.databinding.ActivityHostBinding
+import hr.algebra.boardgames.framework.fetchItems
+import hr.algebra.boardgames.viewmodels.FavoriteItemsViewModel
 
 const val API_RESPONSE_STRING_KEY = "hr.algebra.boardgames.apiResponseStringKey"
 
@@ -21,6 +24,8 @@ class HostActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHostBinding
+    private val favoriteItemsViewModel: FavoriteItemsViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +33,7 @@ class HostActivity : AppCompatActivity() {
         binding = ActivityHostBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initNavigation()
+        favoriteItemsViewModel.setFavoriteItems(fetchItems())
     }
 
     private fun initNavigation() {

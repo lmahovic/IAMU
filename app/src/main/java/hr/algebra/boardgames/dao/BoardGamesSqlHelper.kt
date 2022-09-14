@@ -10,18 +10,18 @@ import hr.algebra.boardgames.model.Item
 private const val DB_NAME = "items.db"
 private const val DB_VERSION = 1
 
-private const val TABLE = "list_items"
+private const val TABLE = "favorite_items"
 
 private val CREATE = "create table $TABLE(" +
         "${Item::_id.name} integer primary key autoincrement, " +
         "${Item::apiId.name} text not null unique, " +
         "${Item::name.name} text not null, " +
-        "${Item::picturePath.name} text not null, " +
+        "${Item::apiPicturePath.name} text not null, " +
+        "${Item::localPicturePath.name} text not null, " +
         "${Item::description.name} text not null, " +
         "${Item::playerCount.name} text not null, " +
         "${Item::playtimeRange.name} text not null, " +
-        "${Item::rank.name} integer not null, " +
-        "${Item::isFavourite.name} integer not null" +
+        "${Item::rank.name} integer not null " +
         ")"
 
 private const val DROP = "drop table $TABLE"

@@ -11,6 +11,6 @@ const val API_CLIENT_KEY_PARAMETER_NAME = "client_id"
 const val API_CLIENT_KEY_PARAMETER_VALUE = "FeykxfqCLi"
 
 interface BoardGamesApi {
-    @GET("search?limit=20&fuzzy_match=true")
+    @GET("search?limit=10&fuzzy_match=true")
     fun fetchItems(@QueryMap filters: Map<String, String>): Call<BoardGamesSearchResponse>
 }

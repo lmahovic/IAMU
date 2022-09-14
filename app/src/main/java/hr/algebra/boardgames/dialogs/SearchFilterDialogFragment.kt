@@ -16,6 +16,7 @@ import hr.algebra.boardgames.framework.setStringProperty
 import hr.algebra.boardgames.model.FILTER_ARGS_PREFERENCES_KEY
 import hr.algebra.boardgames.model.FilterArgs
 import hr.algebra.boardgames.model.OrderParam
+import hr.algebra.boardgames.viewmodels.FavoriteItemsViewModel
 import hr.algebra.boardgames.viewmodels.FilterArgsViewModel
 
 class SearchFilterDialogFragment : DialogFragment() {

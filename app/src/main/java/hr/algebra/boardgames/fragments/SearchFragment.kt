@@ -7,16 +7,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import hr.algebra.boardgames.R
-import hr.algebra.boardgames.activities.API_RESPONSE_STRING_KEY
 import hr.algebra.boardgames.adapters.SearchFragmentRecyclerViewAdapter
 import hr.algebra.boardgames.api.BoardGamesFetcher
-import hr.algebra.boardgames.api.BoardGamesSearchResponse
 import hr.algebra.boardgames.databinding.FragmentSearchBinding
 import hr.algebra.boardgames.dialogs.SearchFilterDialogFragment
-import hr.algebra.boardgames.framework.getStringProperty
+import hr.algebra.boardgames.framework.restoreItemsFromPreferences
 import hr.algebra.boardgames.model.Item
+import hr.algebra.boardgames.viewmodels.FavoriteItemsViewModel
 import hr.algebra.boardgames.viewmodels.FilterArgsViewModel
 
 
@@ -27,7 +25,8 @@ class SearchFragment : Fragment() {
     private lateinit var items: MutableList<Item>
     private lateinit var binding: FragmentSearchBinding
 
-    private val viewModel: FilterArgsViewModel by activityViewModels()
+    private val filterArgsViewModel: FilterArgsViewModel by activityViewModels()
+    private val favoriteItemsViewModel: FavoriteItemsViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,24 +41,9 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        items = requireContext().fetchItems()
-        val itemsJsonString = requireContext().getStringProperty(API_RESPONSE_STRING_KEY)
-        val boardGames =
-            Gson().fromJson(itemsJsonString, BoardGamesSearchResponse::class.java).games
-        items = boardGames.map { boardGamesItem ->
-            Item(
-                null,
-                boardGamesItem.id,
-                boardGamesItem.name,
-                boardGamesItem.imageUrl,
-                boardGamesItem.description,
-                boardGamesItem.playerCount ?: "n/a",
-                boardGamesItem.playtimeRange ?: "n/a",
-                boardGamesItem.rank,
-                false
-            )
-        }.toMutableList()
+        items = requireContext().restoreItemsFromPreferences()
         binding = FragmentSearchBinding.inflate(inflater, container, false)
+        showMessageIfListEmpty()
         return binding.root
     }
 
@@ -67,11 +51,16 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         rvItems = binding.rvItems.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = SearchFragmentRecyclerViewAdapter(requireContext(), items)
+            adapter =
+                SearchFragmentRecyclerViewAdapter(requireContext(), items, favoriteItemsViewModel)
         }
-        viewModel.filterArgs.observe(viewLifecycleOwner) {
+        filterArgsViewModel.filterArgs.observe(viewLifecycleOwner) {
             showProgressDialog()
             BoardGamesFetcher(requireContext()).fetchItems(this)
+        }
+
+        favoriteItemsViewModel.favoriteItems.observe(viewLifecycleOwner) {
+            updateRecyclerViewFavorites()
         }
     }
 
@@ -104,36 +93,30 @@ class SearchFragment : Fragment() {
     /**
      * This function is used to dismiss the progress dialog if it is visible to user.
      */
-    private fun hideProgressDialog() {
+    fun hideProgressDialog() {
         mProgressDialog.dismiss()
     }
 
     fun updateRecyclerViewFromApi() {
-        val itemsJsonString = requireContext().getStringProperty(API_RESPONSE_STRING_KEY)
-        val boardGames =
-            Gson().fromJson(itemsJsonString, BoardGamesSearchResponse::class.java).games
-        items = boardGames.map { boardGamesItem ->
-            Item(
-                null,
-                boardGamesItem.id,
-                boardGamesItem.name,
-                boardGamesItem.imageUrl,
-                boardGamesItem.description,
-                boardGamesItem.playerCount ?: "n/a",
-                boardGamesItem.playtimeRange ?: "n/a",
-                boardGamesItem.rank,
-                false
-            )
-        }.toMutableList()
+        items = requireContext().restoreItemsFromPreferences()
         val searchFragmentRecyclerViewAdapter = rvItems.adapter as SearchFragmentRecyclerViewAdapter
         searchFragmentRecyclerViewAdapter.updateItemList(items)
-        if(items.isEmpty()) {
+        showMessageIfListEmpty()
+        hideProgressDialog()
+    }
+
+    private fun updateRecyclerViewFavorites() {
+        val searchFragmentRecyclerViewAdapter = rvItems.adapter as SearchFragmentRecyclerViewAdapter
+        searchFragmentRecyclerViewAdapter.updateItemList(items)
+    }
+
+    private fun showMessageIfListEmpty() {
+        if (items.isEmpty()) {
             binding.emptyView.visibility = View.VISIBLE
             binding.rvItems.visibility = View.GONE
         } else {
             binding.emptyView.visibility = View.GONE
             binding.rvItems.visibility = View.VISIBLE
         }
-        hideProgressDialog()
     }
 }

@@ -1,9 +1,8 @@
 package hr.algebra.boardgames.adapters
 
+import android.app.AlertDialog
 import android.content.ContentUris
-import android.content.ContentValues
 import android.content.Context
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,46 +14,43 @@ import hr.algebra.boardgames.R
 import hr.algebra.boardgames.activities.ItemPagerActivity
 import hr.algebra.boardgames.api.BAD_RANK
 import hr.algebra.boardgames.contentproviders.BOARD_GAMES_PROVIDER_URI
-import hr.algebra.boardgames.framework.isItemInFavorites
 import hr.algebra.boardgames.framework.startActivity
-import hr.algebra.boardgames.handler.downloadImageAndStore
 import hr.algebra.boardgames.model.Item
 import hr.algebra.boardgames.viewmodels.FavoriteItemsViewModel
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.io.File
 
-class SearchFragmentRecyclerViewAdapter(
+class FavoriteFragmentRecyclerViewAdapter(
     private val context: Context,
-    private var items: MutableList<Item>,
-    private val favoriteItemsViewModel: FavoriteItemsViewModel,
-) : RecyclerView.Adapter<SearchFragmentRecyclerViewAdapter.ViewHolder>() {
+    private var favoriteItemsViewModel: FavoriteItemsViewModel
+) : RecyclerView.Adapter<FavoriteFragmentRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(LayoutInflater.from(context).inflate(R.layout.item, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+        val item = getViewModelItems()[position]
+
         holder.itemView.findViewById<ImageView>(R.id.ivFavorite).setOnClickListener {
-            if (favoriteItemsViewModel.isItemInFavorites(item)) {
-                deleteItem(position)
-                favoriteItemsViewModel.removeFromFavoriteItems(item)
-            } else {
-                addItem(item)
-                favoriteItemsViewModel.addToFavoriteItems(item)
+            AlertDialog.Builder(context).apply {
+                setTitle(R.string.delete)
+                setMessage(context.getString(R.string.sure) + " '${item.name}'?")
+                setIcon(R.drawable.delete)
+                setCancelable(true)
+                setNegativeButton(R.string.cancel, null)
+                setPositiveButton("Ok") { _, _ -> deleteItem(position) }
+                show()
             }
-            notifyItemChanged(position)
         }
 
         holder.itemView.setOnClickListener {
-            context.startActivity<ItemPagerActivity>(position)
+            context.startActivity<ItemPagerActivity>(position, true)
         }
 
         holder.bind(item)
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivItemImage = itemView.findViewById<ImageView>(R.id.ivItemImage)
         private val tvItemName = itemView.findViewById<TextView>(R.id.tvItemName)
         private val tvRank = itemView.findViewById<TextView>(R.id.tvRank)
@@ -70,26 +66,18 @@ class SearchFragmentRecyclerViewAdapter(
             }
             tvPlayerCount.text = item.playerCount
             tvPlayTime.text = item.playtimeRange
-            ivFavorite.setImageResource(
-                if (favoriteItemsViewModel.isItemInFavorites(item)) {
-                    R.drawable.ic_favorite
-                } else {
-                    R.drawable.ic_favorite_border
-                }
-            )
+            ivFavorite.setImageResource(R.drawable.ic_favorite)
 
             Picasso.get()
-                .load(Uri.parse(item.apiPicturePath))
+                .load(File(item.localPicturePath!!))
                 .error(R.drawable.board_games_about)
                 .transform(RoundedCornersTransformation(50, 5))
                 .into(ivItemImage)
         }
     }
 
-    override fun getItemCount() = items.size
-
     private fun deleteItem(position: Int) {
-        val item = items[position]
+        val item = getViewModelItems()[position]
         context.contentResolver.delete(
             ContentUris.withAppendedId(BOARD_GAMES_PROVIDER_URI, item._id!!),
             null,
@@ -99,40 +87,13 @@ class SearchFragmentRecyclerViewAdapter(
         favoriteItemsViewModel.removeFromFavoriteItems(item)
         item._id = null
         item.localPicturePath = null
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, getViewModelItems().size)
     }
 
-    private fun addItem(item: Item) {
+    override fun getItemCount() = getViewModelItems().size
 
-        GlobalScope.launch {
-            item.let {
-                val picturePath = downloadImageAndStore(
-                    context,
-                    it.apiPicturePath,
-                    it.name.replace(" ", "_")
-                )
-                picturePath?.let {
-                    item.localPicturePath = picturePath
-                }
-                val values = ContentValues().apply {
-                    put(Item::apiId.name, it.apiId)
-                    put(Item::name.name, it.name)
-                    put(Item::apiPicturePath.name, it.apiPicturePath)
-                    put(Item::localPicturePath.name, picturePath ?: "")
-                    put(Item::description.name, it.description)
-                    put(Item::playerCount.name, it.playerCount)
-                    put(Item::playtimeRange.name, it.playtimeRange)
-                    put(Item::rank.name, it.rank)
-                }
-                val itemUrl = context.contentResolver.insert(BOARD_GAMES_PROVIDER_URI, values)
-                if (itemUrl != null) {
-                    item._id = ContentUris.parseId(itemUrl)
-                }
-            }
-        }
-    }
-
-    fun updateItemList(newItems: MutableList<Item>) {
-        items = newItems
-        notifyDataSetChanged()
+    private fun getViewModelItems(): List<Item> {
+        return favoriteItemsViewModel.favoriteItems.value!!
     }
 }
